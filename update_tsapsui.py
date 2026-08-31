@@ -138,11 +138,11 @@ else:
         selected = unpublished[0]
         selected["archive"] = False
 
-else:
-    print("No unseen current SFI articles remain.")
-    print("Searching the SFI archive...")
+    else:
+        print("No unseen current SFI articles remain.")
+        print("Searching the SFI archive...")
 
-    selected = fetch_sfi_archive(published_urls)
+        selected = fetch_sfi_archive(published_urls)
 
     if selected is None:
         raise RuntimeError(
