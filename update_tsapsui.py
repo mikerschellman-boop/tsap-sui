@@ -124,19 +124,19 @@ if current_issue and current_issue.get("issue_date") == issue_date:
     print("SFI already selected for this week's issue.")
 
 else:
-published_urls = set(history["sfi"]["published"])
+    published_urls = set(history["sfi"]["published"])
 
-articles = fetch_sfi_current()
+    articles = fetch_sfi_current()
 
-unpublished = [
-    article
-    for article in articles
-    if article["url"] not in published_urls
-]
+    unpublished = [
+        article
+        for article in articles
+        if article["url"] not in published_urls
+    ]
 
-if unpublished:
-    selected = unpublished[0]
-    selected["archive"] = False
+    if unpublished:
+        selected = unpublished[0]
+        selected["archive"] = False
 
 else:
     print("No unseen current SFI articles remain.")
