@@ -1,12 +1,12 @@
 {
-  "updated": "2026-08-29",
+  "updated": "2026-08-31",
   "sections": {
     "complexity": [
       {
         "source": "Santa Fe Institute",
-        "title": "Tsap Sui feed test",
+        "title": "Automated Tsap Sui test",
         "url": "https://www.santafe.edu/",
-        "date": "2026-08-29",
+        "date": "2026-08-31",
         "archive": false
       }
     ]
