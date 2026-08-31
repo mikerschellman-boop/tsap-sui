@@ -179,3 +179,4 @@ print(selected["url"])
 # TEMPORARY ARCHIVE TEST
 print("\n--- ARCHIVE RETRIEVAL TEST ---")
 test_published = set(history["sfi"]["published"])
+archive_test = fetch_sfi_archive(test_published)
