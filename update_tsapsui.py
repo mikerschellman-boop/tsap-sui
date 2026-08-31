@@ -178,3 +178,4 @@ print(f"Selected SFI article: {selected['title']}")
 print(selected["url"])
 # TEMPORARY ARCHIVE TEST
 print("\n--- ARCHIVE RETRIEVAL TEST ---")
+test_published = set(history["sfi"]["published"])
