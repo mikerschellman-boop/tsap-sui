@@ -35,15 +35,8 @@ def save_history(history):
         json.dump(history, f, indent=2, ensure_ascii=False)
 
 
-def fetch_sfi_articles():
-    response = requests.get(
-        SFI_HOME,
-        timeout=30,
-        headers={"User-Agent": "Tsap-Sui/1.0"}
-    )
-    response.raise_for_status()
-
-    soup = BeautifulSoup(response.text, "html.parser")
+def extract_sfi_articles(html, base_url):
+    soup = BeautifulSoup(html, "html.parser")
     articles = []
 
     for link in soup.find_all("a", href=True):
@@ -58,12 +51,13 @@ def fetch_sfi_articles():
 
         if title.lower() in {
             "learn more",
+            "read more",
             "view all news",
             "news"
         }:
             continue
 
-        url = urljoin(SFI_HOME, href)
+        url = urljoin(base_url, href)
 
         if url.rstrip("/") == "https://www.santafe.edu/news-center/news":
             continue
@@ -81,6 +75,43 @@ def fetch_sfi_articles():
     return articles
 
 
+def fetch_sfi_current():
+    response = requests.get(
+        SFI_HOME,
+        timeout=30,
+        headers={"User-Agent": "Tsap-Sui/1.0"}
+    )
+    response.raise_for_status()
+
+    return extract_sfi_articles(response.text, SFI_HOME)
+
+
+def fetch_sfi_archive(published_urls, max_pages=40):
+    archive_base = "https://www.santafe.edu/news-center/news/"
+
+    for page in range(1, max_pages + 1):
+        archive_url = f"{archive_base}?page={page}"
+
+        response = requests.get(
+            archive_url,
+            timeout=30,
+            headers={"User-Agent": "Tsap-Sui/1.0"}
+        )
+        response.raise_for_status()
+
+        articles = extract_sfi_articles(
+            response.text,
+            archive_base
+        )
+
+        for article in articles:
+            if article["url"] not in published_urls:
+                article["archive"] = True
+                return article
+
+    return None
+
+
 history = load_history()
 issue_date = str(get_issue_date())
 
@@ -93,26 +124,30 @@ if current_issue and current_issue.get("issue_date") == issue_date:
     print("SFI already selected for this week's issue.")
 
 else:
-    articles = fetch_sfi_articles()
+published_urls = set(history["sfi"]["published"])
 
-    if not articles:
-        raise RuntimeError("No SFI news articles were found.")
+articles = fetch_sfi_current()
 
-    published_urls = set(history["sfi"]["published"])
+unpublished = [
+    article
+    for article in articles
+    if article["url"] not in published_urls
+]
 
-    unpublished = [
-        article
-        for article in articles
-        if article["url"] not in published_urls
-    ]
-
-    if not unpublished:
-        raise RuntimeError(
-            "No unseen current SFI articles remain. "
-            "Archive retrieval still needs to be added."
-        )
-
+if unpublished:
     selected = unpublished[0]
+    selected["archive"] = False
+
+else:
+    print("No unseen current SFI articles remain.")
+    print("Searching the SFI archive...")
+
+    selected = fetch_sfi_archive(published_urls)
+
+    if selected is None:
+        raise RuntimeError(
+            "No unseen SFI archive articles were found."
+        )
 
     history["sfi"]["published"].append(selected["url"])
 
