@@ -27,26 +27,34 @@ for link in soup.find_all("a", href=True):
     if "/news-center/news/" not in href:
         continue
 
+    # Ignore generic navigation links
+    if title.lower() in {
+        "learn more",
+        "view all news",
+        "news"
+    }:
+        continue
+
     url = urljoin(SFI_HOME, href)
 
     if url.rstrip("/") == "https://www.santafe.edu/news-center/news":
         continue
 
-    item = {
+    # Avoid duplicate URLs
+    if any(article["url"] == url for article in articles):
+        continue
+
+    articles.append({
         "source": "Santa Fe Institute",
         "title": title,
         "url": url,
         "date": str(date.today()),
         "archive": False
-    }
-
-    if item not in articles:
-        articles.append(item)
+    })
 
 if not articles:
     raise RuntimeError("No SFI news articles were found.")
 
-# For this first real test, publish only the first article found.
 selected = articles[0]
 
 data = {
