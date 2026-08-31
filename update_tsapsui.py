@@ -180,3 +180,11 @@ print(selected["url"])
 print("\n--- ARCHIVE RETRIEVAL TEST ---")
 test_published = set(history["sfi"]["published"])
 archive_test = fetch_sfi_archive(test_published)
+
+if archive_test:
+    print("Archive retrieval works.")
+    print(f"Title: {archive_test['title']}")
+    print(f"URL: {archive_test['url']}")
+    print(f"Archive flag: {archive_test['archive']}")
+else:
+    print("Archive retrieval test found nothing.")
