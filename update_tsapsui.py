@@ -176,3 +176,5 @@ with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
 print(f"Issue date: {issue_date}")
 print(f"Selected SFI article: {selected['title']}")
 print(selected["url"])
+# TEMPORARY ARCHIVE TEST
+print("\n--- ARCHIVE RETRIEVAL TEST ---")
