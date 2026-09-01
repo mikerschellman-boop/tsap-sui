@@ -201,6 +201,25 @@ data = {
 with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
     json.dump(data, f, indent=2, ensure_ascii=False)
 
+# TEMPORARY HEYLIGHEN RSS TEST
+print("\n--- HEYLIGHEN RSS TEST ---")
+
+heylighen_test = fetch_heylighen_current()
+
+print(f"Articles found: {len(heylighen_test)}")
+
+if heylighen_test:
+    first = heylighen_test[0]
+
+    print(f"Title: {first['title']}")
+    print(f"URL: {first['url']}")
+    print(f"Published: {first['published_date']}")
+    print(f"Origin: {first['origin']}")
+    print(f"Archive: {first['archive']}")
+    print(f"Summary available: {bool(first['summary'])}")
+else:
+    print("No Heylighen articles found.")
+
 print(f"Issue date: {issue_date}")
 print(f"Selected SFI article: {selected['title']}")
 print(selected["url"])
