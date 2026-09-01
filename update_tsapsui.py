@@ -114,6 +114,43 @@ def fetch_sfi_archive(published_urls):
 
 
 # ==========================================
+# TAIJIQUAN JOURNAL COLLECTOR
+# ==========================================
+
+def fetch_taijiquan_journal_current():
+    response = requests.get(
+        TAIJIQUAN_JOURNAL_FEED,
+        timeout=30,
+        headers={"User-Agent": "Mozilla/5.0"}
+    )
+    response.raise_for_status()
+
+    root = ET.fromstring(response.content)
+
+    articles = []
+
+    for item in root.findall(".//item"):
+        title = item.findtext("title")
+        link = item.findtext("link")
+        pub_date = item.findtext("pubDate")
+        description = item.findtext("description")
+
+        if not title or not link:
+            continue
+
+        articles.append({
+            "source": "Taijiquan Journal",
+            "title": title.strip(),
+            "url": link.strip(),
+            "published_date": pub_date.strip() if pub_date else None,
+            "summary": description.strip() if description else None,
+            "archive": False
+        })
+
+    return articles
+
+
+# ==========================================
 # CURRENT COLLECTOR TEST: TAIJIQUAN JOURNAL
 # ==========================================
 
