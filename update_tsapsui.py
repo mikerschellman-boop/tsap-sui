@@ -6,6 +6,8 @@ from urllib.parse import urljoin
 
 
 SFI_HOME = "https://www.santafe.edu/"
+HEYLIGHEN_FEED = "https://francisheylighen.substack.com/feed"
+
 HISTORY_FILE = "history.json"
 OUTPUT_FILE = "tsapsui.json"
 SFI_ARCHIVE_FILE = "sfi_archive.json"
