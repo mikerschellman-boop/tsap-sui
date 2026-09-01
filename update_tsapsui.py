@@ -150,6 +150,52 @@ def fetch_taijiquan_journal_current():
 
     return articles
 
+# ==========================================
+# LIVING TAO FOUNDATION COLLECTOR
+# ==========================================
+
+def fetch_living_tao_current():
+    response = requests.get(
+        LIVING_TAO_STUDY,
+        timeout=30,
+        headers={"User-Agent": "Mozilla/5.0"}
+    )
+    response.raise_for_status()
+
+    soup = BeautifulSoup(response.text, "html.parser")
+    articles = []
+
+    for link in soup.find_all("a", href=True):
+        title = " ".join(link.get_text(" ", strip=True).split())
+        href = link["href"]
+
+        if not title:
+            continue
+
+        url = urljoin(LIVING_TAO_STUDY, href)
+
+        # Study-material entries are individual pages beneath this section.
+        if "/seminars/study-materials/" not in url:
+            continue
+
+        # Don't treat the index itself as an article.
+        if url.rstrip("/") == LIVING_TAO_STUDY.rstrip("/"):
+            continue
+
+        # Avoid duplicate links to the same study material.
+        if any(article["url"] == url for article in articles):
+            continue
+
+        articles.append({
+            "source": "Living Tao Foundation",
+            "title": title,
+            "url": url,
+            "published_date": None,
+            "summary": None,
+            "archive": False
+        })
+
+    return articles
 
 # ==========================================
 # CURRENT COLLECTOR TEST: TAIJIQUAN JOURNAL
