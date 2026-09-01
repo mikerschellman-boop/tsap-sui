@@ -8,6 +8,7 @@ import xml.etree.ElementTree as ET
 
 SFI_HOME = "https://www.santafe.edu/"
 HEYLIGHEN_FEED = "https://francisheylighen.substack.com/feed"
+TAIJIQUAN_JOURNAL_FEED = "https://taijiquanjournal.blogspot.com/feeds/posts/default?alt=rss"
 
 HISTORY_FILE = "history.json"
 OUTPUT_FILE = "tsapsui.json"
