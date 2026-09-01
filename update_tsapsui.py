@@ -88,28 +88,19 @@ def fetch_sfi_current():
     return extract_sfi_articles(response.text, SFI_HOME)
 
 
-def fetch_sfi_archive(published_urls, max_pages=40):
-    archive_base = "https://www.santafe.edu/news-center/news/"
+def fetch_sfi_archive(published_urls):
+    with open(SFI_ARCHIVE_FILE, "r", encoding="utf-8") as f:
+        archive_articles = json.load(f)
 
-    for page in range(1, max_pages + 1):
-        archive_url = f"{archive_base}?page={page}"
-
-        response = requests.get(
-            archive_url,
-            timeout=30,
-            headers={"User-Agent": "Tsap-Sui/1.0"}
-        )
-        response.raise_for_status()
-
-        articles = extract_sfi_articles(
-            response.text,
-            archive_base
-        )
-
-        for article in articles:
-            if article["url"] not in published_urls:
-                article["archive"] = True
-                return article
+    for article in archive_articles:
+        if article["url"] not in published_urls:
+            return {
+                "source": "Santa Fe Institute",
+                "title": article["title"],
+                "url": article["url"],
+                "published_date": article.get("published_date"),
+                "archive": True
+            }
 
     return None
 
