@@ -114,99 +114,25 @@ def fetch_sfi_archive(published_urls):
 
 
 # ==========================================
-# FRANCIS HEYLIGHEN COLLECTOR
+# CURRENT COLLECTOR TEST: TAIJIQUAN JOURNAL
 # ==========================================
 
-def fetch_heylighen_current():
-    response = requests.get(
-        HEYLIGHEN_FEED,
-        timeout=30,
-        headers={
-            "User-Agent": "Mozilla/5.0",
-            "Accept": "application/rss+xml, application/xml, text/xml, */*",
-            "Accept-Language": "en-US,en;q=0.9"
-        }
-    )
-    response.raise_for_status()
+print("\n--- TAIJIQUAN JOURNAL RSS TEST ---")
 
-    root = ET.fromstring(response.content)
+taiji_test = fetch_taijiquan_journal_current()
 
-    articles = []
+print(f"Articles found: {len(taiji_test)}")
 
-    for item in root.findall(".//item"):
-        title = item.findtext("title")
-        link = item.findtext("link")
-        pub_date = item.findtext("pubDate")
-        description = item.findtext("description")
-
-        if not title or not link:
-            continue
-
-        articles.append({
-            "source": "Francis Heylighen",
-            "origin": "The Self-Organizing Universe",
-            "title": title.strip(),
-            "url": link.strip(),
-            "published_date": pub_date.strip() if pub_date else None,
-            "summary": description.strip() if description else None,
-            "archive": False
-        })
-
-    return articles
-
-def fetch_taijiquan_journal_current():
-    response = requests.get(
-        TAIJIQUAN_JOURNAL_FEED,
-        timeout=30,
-        headers={"User-Agent": "Mozilla/5.0"}
-    )
-    response.raise_for_status()
-
-    root = ET.fromstring(response.content)
-
-    articles = []
-
-    for item in root.findall(".//item"):
-        title = item.findtext("title")
-        link = item.findtext("link")
-        pub_date = item.findtext("pubDate")
-        description = item.findtext("description")
-
-        if not title or not link:
-            continue
-
-        articles.append({
-            "source": "Taijiquan Journal",
-            "title": title.strip(),
-            "url": link.strip(),
-            "published_date": pub_date.strip() if pub_date else None,
-            "summary": description.strip() if description else None,
-            "archive": False
-        })
-
-    return articles
-
-# ==========================================
-# CURRENT COLLECTOR TEST: FRANCIS HEYLIGHEN
-# ==========================================
-
-print("\n--- HEYLIGHEN RSS TEST ---")
-
-heylighen_test = fetch_heylighen_current()
-
-print(f"Articles found: {len(heylighen_test)}")
-
-if heylighen_test:
-    first = heylighen_test[0]
+if taiji_test:
+    first = taiji_test[0]
 
     print(f"Title: {first['title']}")
     print(f"URL: {first['url']}")
     print(f"Published: {first['published_date']}")
-    print(f"Origin: {first['origin']}")
     print(f"Archive: {first['archive']}")
     print(f"Summary available: {bool(first['summary'])}")
 else:
-    print("No Heylighen articles found.")
+    print("No Taijiquan Journal articles found.")
 
 
 # ==========================================
