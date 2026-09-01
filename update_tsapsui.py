@@ -3,6 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 from datetime import date, timedelta
 from urllib.parse import urljoin
+import xml.etree.ElementTree as ET
 
 
 SFI_HOME = "https://www.santafe.edu/"
@@ -106,6 +107,38 @@ def fetch_sfi_archive(published_urls):
 
     return None
 
+def fetch_heylighen_current():
+    response = requests.get(
+        HEYLIGHEN_FEED,
+        timeout=30,
+        headers={"User-Agent": "Tsap-Sui/1.0"}
+    )
+    response.raise_for_status()
+
+    root = ET.fromstring(response.content)
+
+    articles = []
+
+    for item in root.findall(".//item"):
+        title = item.findtext("title")
+        link = item.findtext("link")
+        pub_date = item.findtext("pubDate")
+        description = item.findtext("description")
+
+        if not title or not link:
+            continue
+
+        articles.append({
+            "source": "Francis Heylighen",
+            "origin": "The Self-Organizing Universe",
+            "title": title.strip(),
+            "url": link.strip(),
+            "published_date": pub_date.strip() if pub_date else None,
+            "summary": description.strip() if description else None,
+            "archive": False
+        })
+
+    return articles
 
 history = load_history()
 issue_date = str(get_issue_date())
