@@ -158,7 +158,11 @@ def fetch_living_tao_current():
     response = requests.get(
         LIVING_TAO_STUDY,
         timeout=30,
-        headers={"User-Agent": "Mozilla/5.0"}
+        headers={
+    "User-Agent": "Mozilla/5.0",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "en-US,en;q=0.9"
+}
     )
     response.raise_for_status()
 
