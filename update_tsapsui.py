@@ -4,9 +4,11 @@ from bs4 import BeautifulSoup
 from datetime import date, timedelta
 from urllib.parse import urljoin
 
+
 SFI_HOME = "https://www.santafe.edu/"
 HISTORY_FILE = "history.json"
 OUTPUT_FILE = "tsapsui.json"
+SFI_ARCHIVE_FILE = "sfi_archive.json"
 
 
 def get_issue_date():
