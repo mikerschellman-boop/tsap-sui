@@ -198,17 +198,17 @@ def fetch_living_tao_current():
     return articles
 
 # ==========================================
-# CURRENT COLLECTOR TEST: TAIJIQUAN JOURNAL
+# CURRENT COLLECTOR TEST: LIVING TAO
 # ==========================================
 
-print("\n--- TAIJIQUAN JOURNAL RSS TEST ---")
+print("\n--- LIVING TAO TEST ---")
 
-taiji_test = fetch_taijiquan_journal_current()
+living_tao_test = fetch_living_tao_current()
 
-print(f"Articles found: {len(taiji_test)}")
+print(f"Articles found: {len(living_tao_test)}")
 
-if taiji_test:
-    first = taiji_test[0]
+if living_tao_test:
+    first = living_tao_test[0]
 
     print(f"Title: {first['title']}")
     print(f"URL: {first['url']}")
@@ -216,7 +216,7 @@ if taiji_test:
     print(f"Archive: {first['archive']}")
     print(f"Summary available: {bool(first['summary'])}")
 else:
-    print("No Taijiquan Journal articles found.")
+    print("No Living Tao study materials found.")
 
 
 # ==========================================
