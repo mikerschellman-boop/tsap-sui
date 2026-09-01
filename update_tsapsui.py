@@ -94,7 +94,16 @@ def fetch_sfi_archive(published_urls):
         if article["url"] not in published_urls:
             return {
                 "source": "Santa Fe Institute",
-                "title": article["title"],
+                "title": article["title"],def fetch_heylighen_current():
+    response = requests.get(
+        HEYLIGHEN_FEED,
+        timeout=30,
+        headers={
+            "User-Agent": "Mozilla/5.0",
+            "Accept": "application/rss+xml, application/xml, text/xml, */*",
+            "Accept-Language": "en-US,en;q=0.9"
+        }
+    )
                 "url": article["url"],
                 "published_date": article.get("published_date"),
                 "archive": True
@@ -102,12 +111,7 @@ def fetch_sfi_archive(published_urls):
 
     return None
 
-def fetch_heylighen_current():
-    response = requests.get(
-        HEYLIGHEN_FEED,
-        timeout=30,
-        headers={"User-Agent": "Tsap-Sui/1.0"}
-    )
+
     response.raise_for_status()
 
     root = ET.fromstring(response.content)
