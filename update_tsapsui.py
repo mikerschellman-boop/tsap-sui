@@ -9,6 +9,11 @@ import xml.etree.ElementTree as ET
 SFI_HOME = "https://www.santafe.edu/"
 HEYLIGHEN_FEED = "https://francisheylighen.substack.com/feed"
 
+HISTORY_FILE = "history.json"
+OUTPUT_FILE = "tsapsui.json"
+SFI_ARCHIVE_FILE = "sfi_archive.json"
+
+
 def get_issue_date():
     """Return the most recent Sunday."""
     today = date.today()
@@ -34,6 +39,10 @@ def save_history(history):
     with open(HISTORY_FILE, "w", encoding="utf-8") as f:
         json.dump(history, f, indent=2, ensure_ascii=False)
 
+
+# ==========================================
+# SANTA FE INSTITUTE COLLECTOR
+# ==========================================
 
 def extract_sfi_articles(html, base_url):
     soup = BeautifulSoup(html, "html.parser")
@@ -94,7 +103,20 @@ def fetch_sfi_archive(published_urls):
         if article["url"] not in published_urls:
             return {
                 "source": "Santa Fe Institute",
-                "title": article["title"],def fetch_heylighen_current():
+                "title": article["title"],
+                "url": article["url"],
+                "published_date": article.get("published_date"),
+                "archive": True
+            }
+
+    return None
+
+
+# ==========================================
+# FRANCIS HEYLIGHEN COLLECTOR
+# ==========================================
+
+def fetch_heylighen_current():
     response = requests.get(
         HEYLIGHEN_FEED,
         timeout=30,
@@ -104,14 +126,6 @@ def fetch_sfi_archive(published_urls):
             "Accept-Language": "en-US,en;q=0.9"
         }
     )
-                "url": article["url"],
-                "published_date": article.get("published_date"),
-                "archive": True
-            }
-
-    return None
-
-
     response.raise_for_status()
 
     root = ET.fromstring(response.content)
@@ -139,7 +153,11 @@ def fetch_sfi_archive(published_urls):
 
     return articles
 
-# TEMPORARY HEYLIGHEN RSS TEST
+
+# ==========================================
+# CURRENT COLLECTOR TEST: FRANCIS HEYLIGHEN
+# ==========================================
+
 print("\n--- HEYLIGHEN RSS TEST ---")
 
 heylighen_test = fetch_heylighen_current()
@@ -165,6 +183,11 @@ else:
 # ==========================================
 
 raise SystemExit
+
+
+# ==========================================
+# REAL ISSUE BUILDER
+# ==========================================
 
 history = load_history()
 issue_date = str(get_issue_date())
@@ -226,7 +249,7 @@ data = {
 
 with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
     json.dump(data, f, indent=2, ensure_ascii=False)
-    
+
 print(f"Issue date: {issue_date}")
 print(f"Selected SFI article: {selected['title']}")
 print(selected["url"])
