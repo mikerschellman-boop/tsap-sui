@@ -9,11 +9,6 @@ import xml.etree.ElementTree as ET
 SFI_HOME = "https://www.santafe.edu/"
 HEYLIGHEN_FEED = "https://francisheylighen.substack.com/feed"
 
-HISTORY_FILE = "history.json"
-OUTPUT_FILE = "tsapsui.json"
-SFI_ARCHIVE_FILE = "sfi_archive.json"
-
-
 def get_issue_date():
     """Return the most recent Sunday."""
     today = date.today()
@@ -140,6 +135,33 @@ def fetch_heylighen_current():
 
     return articles
 
+# TEMPORARY HEYLIGHEN RSS TEST
+print("\n--- HEYLIGHEN RSS TEST ---")
+
+heylighen_test = fetch_heylighen_current()
+
+print(f"Articles found: {len(heylighen_test)}")
+
+if heylighen_test:
+    first = heylighen_test[0]
+
+    print(f"Title: {first['title']}")
+    print(f"URL: {first['url']}")
+    print(f"Published: {first['published_date']}")
+    print(f"Origin: {first['origin']}")
+    print(f"Archive: {first['archive']}")
+    print(f"Summary available: {bool(first['summary'])}")
+else:
+    print("No Heylighen articles found.")
+
+
+# ==========================================
+# STOP HERE DURING COLLECTOR TESTING
+# Nothing below this line will run.
+# ==========================================
+
+raise SystemExit
+
 history = load_history()
 issue_date = str(get_issue_date())
 
@@ -200,26 +222,7 @@ data = {
 
 with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
     json.dump(data, f, indent=2, ensure_ascii=False)
-
-# TEMPORARY HEYLIGHEN RSS TEST
-print("\n--- HEYLIGHEN RSS TEST ---")
-
-heylighen_test = fetch_heylighen_current()
-
-print(f"Articles found: {len(heylighen_test)}")
-
-if heylighen_test:
-    first = heylighen_test[0]
-
-    print(f"Title: {first['title']}")
-    print(f"URL: {first['url']}")
-    print(f"Published: {first['published_date']}")
-    print(f"Origin: {first['origin']}")
-    print(f"Archive: {first['archive']}")
-    print(f"Summary available: {bool(first['summary'])}")
-else:
-    print("No Heylighen articles found.")
-
+    
 print(f"Issue date: {issue_date}")
 print(f"Selected SFI article: {selected['title']}")
 print(selected["url"])
