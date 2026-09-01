@@ -169,15 +169,3 @@ with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
 print(f"Issue date: {issue_date}")
 print(f"Selected SFI article: {selected['title']}")
 print(selected["url"])
-# TEMPORARY ARCHIVE TEST
-print("\n--- ARCHIVE RETRIEVAL TEST ---")
-test_published = set(history["sfi"]["published"])
-archive_test = fetch_sfi_archive(test_published)
-
-if archive_test:
-    print("Archive retrieval works.")
-    print(f"Title: {archive_test['title']}")
-    print(f"URL: {archive_test['url']}")
-    print(f"Archive flag: {archive_test['archive']}")
-else:
-    print("Archive retrieval test found nothing.")
