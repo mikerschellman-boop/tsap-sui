@@ -217,14 +217,17 @@ def fetch_living_tao_current():
 # CURRENT COLLECTOR TEST
 # ==========================================
 
-print("\n--- NO ACTIVE COLLECTOR TEST ---")
+if TEST_MODE:
+    print("\n--- TEST MODE ---")
 
-# ==========================================
-# STOP HERE DURING COLLECTOR TESTING
-# Nothing below this line will run.
-# ==========================================
+    if TEST_SOURCE is None:
+        print("No collector selected for testing.")
 
-raise SystemExit
+    else:
+        print(f"Testing collector: {TEST_SOURCE}")
+
+    # Stop before the real issue builder.
+    raise SystemExit
 
 
 # ==========================================
