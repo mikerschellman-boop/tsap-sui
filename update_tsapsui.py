@@ -285,6 +285,50 @@ else:
 
     save_history(history)
 
+# ==========================================
+# TAIJIQUAN JOURNAL WEEKLY SELECTION
+# ==========================================
+
+taiji_current_issue = history["taijiquan_journal"]["current_issue"]
+
+if (
+    taiji_current_issue
+    and taiji_current_issue.get("issue_date") == issue_date
+):
+    taiji_selected = taiji_current_issue["article"]
+    print("Taijiquan Journal already selected for this week's issue.")
+
+else:
+    taiji_published_urls = set(
+        history["taijiquan_journal"]["published"]
+    )
+
+    taiji_articles = fetch_taijiquan_journal_current()
+
+    taiji_unpublished = [
+        article
+        for article in taiji_articles
+        if article["url"] not in taiji_published_urls
+    ]
+
+    if not taiji_unpublished:
+        raise RuntimeError(
+            "No unseen Taijiquan Journal articles were found."
+        )
+
+    taiji_selected = taiji_unpublished[0]
+
+    history["taijiquan_journal"]["published"].append(
+        taiji_selected["url"]
+    )
+
+    history["taijiquan_journal"]["current_issue"] = {
+        "issue_date": issue_date,
+        "article": taiji_selected
+    }
+
+    save_history(history)
+
 # The displayed date is the Tsap Sui issue date.
 selected_for_output = dict(selected)
 selected_for_output["date"] = issue_date
