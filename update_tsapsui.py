@@ -16,6 +16,14 @@ OUTPUT_FILE = "tsapsui.json"
 SFI_ARCHIVE_FILE = "sfi_archive.json"
 
 
+# ==========================================
+# TEST CONTROLS
+# ==========================================
+
+TEST_MODE = True
+TEST_SOURCE = None
+
+
 def get_issue_date():
     """Return the most recent Sunday."""
     today = date.today()
