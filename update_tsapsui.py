@@ -30,11 +30,15 @@ def load_history():
     except FileNotFoundError:
         history = {}
 
-    history.setdefault("sfi", {})
-    history["sfi"].setdefault("published", [])
-    history["sfi"].setdefault("current_issue", None)
+history.setdefault("sfi", {})
+history["sfi"].setdefault("published", [])
+history["sfi"].setdefault("current_issue", None)
 
-    return history
+history.setdefault("taijiquan_journal", {})
+history["taijiquan_journal"].setdefault("published", [])
+history["taijiquan_journal"].setdefault("current_issue", None)
+
+return history
 
 
 def save_history(history):
