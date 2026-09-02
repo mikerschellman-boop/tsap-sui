@@ -206,26 +206,10 @@ def fetch_living_tao_current():
     return articles
 
 # ==========================================
-# CURRENT COLLECTOR TEST: LIVING TAO
+# CURRENT COLLECTOR TEST
 # ==========================================
 
-print("\n--- LIVING TAO TEST ---")
-
-living_tao_test = fetch_living_tao_current()
-
-print(f"Articles found: {len(living_tao_test)}")
-
-if living_tao_test:
-    first = living_tao_test[0]
-
-    print(f"Title: {first['title']}")
-    print(f"URL: {first['url']}")
-    print(f"Published: {first['published_date']}")
-    print(f"Archive: {first['archive']}")
-    print(f"Summary available: {bool(first['summary'])}")
-else:
-    print("No Living Tao study materials found.")
-
+print("\n--- NO ACTIVE COLLECTOR TEST ---")
 
 # ==========================================
 # STOP HERE DURING COLLECTOR TESTING
@@ -333,11 +317,15 @@ else:
 selected_for_output = dict(selected)
 selected_for_output["date"] = issue_date
 
+taiji_selected_for_output = dict(taiji_selected)
+taiji_selected_for_output["date"] = issue_date
+
 data = {
     "issue_date": issue_date,
     "updated": str(date.today()),
     "sections": {
-        "complexity": [selected_for_output]
+        "complexity": [selected_for_output],
+        "taiji": [taiji_selected_for_output]
     }
 }
 
