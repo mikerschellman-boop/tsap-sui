@@ -163,6 +163,38 @@ def fetch_taijiquan_journal_current():
 
     return articles
 
+
+def fetch_judith_weingarten_current():
+    response = requests.get(
+        JUDITH_WEINGARTEN_FEED,
+        timeout=30,
+        headers={"User-Agent": "Mozilla/5.0"}
+    )
+    response.raise_for_status()
+
+    root = ET.fromstring(response.content)
+    articles = []
+
+    for item in root.findall(".//item"):
+        title = item.findtext("title")
+        link = item.findtext("link")
+        pub_date = item.findtext("pubDate")
+        description = item.findtext("description")
+
+        if not title or not link:
+            continue
+
+        articles.append({
+            "source": "Zenobia: Empress of the East",
+            "author": "Judith Weingarten",
+            "title": title.strip(),
+            "url": link.strip(),
+            "published_date": pub_date.strip() if pub_date else None,
+            "summary": description.strip() if description else None,
+            "archive": False
+        })
+
+    return articles
 # ==========================================
 # LIVING TAO FOUNDATION COLLECTOR
 # ==========================================
