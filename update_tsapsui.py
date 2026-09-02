@@ -9,6 +9,7 @@ import xml.etree.ElementTree as ET
 SFI_HOME = "https://www.santafe.edu/"
 HEYLIGHEN_FEED = "https://francisheylighen.substack.com/feed"
 TAIJIQUAN_JOURNAL_FEED = "https://taijiquanjournal.blogspot.com/feeds/posts/default?alt=rss"
+JUDITH_WEINGARTEN_FEED = "https://judithweingarten.blogspot.com/feeds/posts/default?alt=rss"
 LIVING_TAO_STUDY = "https://livingtao.org/seminars/study-materials/"
 
 HISTORY_FILE = "history.json"
