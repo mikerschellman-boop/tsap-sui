@@ -21,7 +21,7 @@ SFI_ARCHIVE_FILE = "sfi_archive.json"
 # ==========================================
 
 TEST_MODE = True
-TEST_SOURCE = None
+TEST_SOURCE = "taijiquan_journal"
 
 
 def get_issue_date():
@@ -223,12 +223,21 @@ if TEST_MODE:
     if TEST_SOURCE is None:
         print("No collector selected for testing.")
 
+    elif TEST_SOURCE == "taijiquan_journal":
+        articles = fetch_taijiquan_journal_current()
+
+        print(f"Found {len(articles)} Taijiquan Journal articles.")
+
+        for article in articles[:5]:
+            print(article["title"])
+            print(article["url"])
+            print()
+
     else:
-        print(f"Testing collector: {TEST_SOURCE}")
+        print(f"Unknown test source: {TEST_SOURCE}")
 
     # Stop before the real issue builder.
     raise SystemExit
-
 
 # ==========================================
 # REAL ISSUE BUILDER
