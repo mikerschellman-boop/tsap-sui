@@ -200,6 +200,46 @@ def fetch_judith_weingarten_current():
         })
 
     return articles
+
+def fetch_rogue_classicism_current():
+    response = requests.get(
+        ROGUE_CLASSICISM_FEED,
+        timeout=30,
+        headers={"User-Agent": "Mozilla/5.0"}
+    )
+    response.raise_for_status()
+
+    root = ET.fromstring(response.content)
+    articles = []
+
+    for item in root.findall(".//item"):
+        title = item.findtext("title")
+        link = item.findtext("link")
+        pub_date = item.findtext("pubDate")
+        description = item.findtext("description")
+
+        if not title or not link:
+            continue
+
+        title = title.strip()
+
+        # We want the substantial RC Bulletin posts,
+        # not the short "This Day in Ancient History" items.
+        if not title.lower().startswith("rc bulletin"):
+            continue
+
+        articles.append({
+            "source": "Rogue Classicism",
+            "title": title,
+            "url": link.strip(),
+            "published_date": pub_date.strip() if pub_date else None,
+            "summary": description.strip() if description else None,
+            "archive": False
+        })
+
+    return articles
+
+
 # ==========================================
 # LIVING TAO FOUNDATION COLLECTOR
 # ==========================================
