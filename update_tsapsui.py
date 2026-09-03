@@ -47,6 +47,10 @@ def load_history():
     history["taijiquan_journal"].setdefault("published", [])
     history["taijiquan_journal"].setdefault("current_issue", None)
 
+    history.setdefault("judith_weingarten", {})
+    history["judith_weingarten"].setdefault("published", [])
+    history["judith_weingarten"].setdefault("current_issue", None)
+
     return history
 
 
@@ -362,6 +366,50 @@ else:
     history["taijiquan_journal"]["current_issue"] = {
         "issue_date": issue_date,
         "article": taiji_selected
+    }
+
+    save_history(history)
+
+# ==========================================
+# JUDITH WEINGARTEN WEEKLY SELECTION
+# ==========================================
+
+judith_current_issue = history["judith_weingarten"]["current_issue"]
+
+if (
+    judith_current_issue
+    and judith_current_issue.get("issue_date") == issue_date
+):
+    judith_selected = judith_current_issue["article"]
+    print("Judith Weingarten already selected for this week's issue.")
+
+else:
+    judith_published_urls = set(
+        history["judith_weingarten"]["published"]
+    )
+
+    judith_articles = fetch_judith_weingarten_current()
+
+    judith_unpublished = [
+        article
+        for article in judith_articles
+        if article["url"] not in judith_published_urls
+    ]
+
+    if not judith_unpublished:
+        raise RuntimeError(
+            "No unseen Judith Weingarten articles were found."
+        )
+
+    judith_selected = judith_unpublished[0]
+
+    history["judith_weingarten"]["published"].append(
+        judith_selected["url"]
+    )
+
+    history["judith_weingarten"]["current_issue"] = {
+        "issue_date": issue_date,
+        "article": judith_selected
     }
 
     save_history(history)
