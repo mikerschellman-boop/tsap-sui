@@ -421,12 +421,16 @@ selected_for_output["date"] = issue_date
 taiji_selected_for_output = dict(taiji_selected)
 taiji_selected_for_output["date"] = issue_date
 
+judith_selected_for_output = dict(judith_selected)
+judith_selected_for_output["date"] = issue_date
+
 data = {
     "issue_date": issue_date,
     "updated": str(date.today()),
     "sections": {
         "complexity": [selected_for_output],
         "taiji": [taiji_selected_for_output]
+        "history": [judith_selected_for_output]
     }
 }
 
