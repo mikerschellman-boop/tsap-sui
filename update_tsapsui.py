@@ -555,9 +555,13 @@ data = {
     }
 }
 
-with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-    json.dump(data, f, indent=2, ensure_ascii=False)
-
+if DRY_RUN:
+    print("\n--- DRY RUN OUTPUT ---")
+    print(json.dumps(data, indent=2, ensure_ascii=False))
+    print("\nDRY RUN: tsapsui.json not written.")
+else:
+    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
 print(f"Issue date: {issue_date}")
 print(f"Selected SFI article: {selected['title']}")
 print(selected["url"])
