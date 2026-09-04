@@ -52,6 +52,10 @@ def load_history():
     history["judith_weingarten"].setdefault("published", [])
     history["judith_weingarten"].setdefault("current_issue", None)
 
+    history.setdefault("rogue_classicism", {})
+    history["rogue_classicism"].setdefault("published", [])
+    history["rogue_classicism"].setdefault("current_issue", None)
+
     return history
 
 
