@@ -188,13 +188,33 @@ def fetch_judith_weingarten_current():
     response.raise_for_status()
 
     root = ET.fromstring(response.content)
+
+    # Judith's Blogger/FeedBurner feed is Atom, not RSS.
+    atom = {"atom": "http://www.w3.org/2005/Atom"}
+
     articles = []
 
-    for item in root.findall(".//item"):
-        title = item.findtext("title")
-        link = item.findtext("link")
-        pub_date = item.findtext("pubDate")
-        description = item.findtext("description")
+    for entry in root.findall("atom:entry", atom):
+        title = entry.findtext("atom:title", default="", namespaces=atom)
+        published = entry.findtext(
+            "atom:published",
+            default="",
+            namespaces=atom
+        )
+        summary = entry.findtext(
+            "atom:summary",
+            default="",
+            namespaces=atom
+        )
+
+        # Blogger Atom entries can contain several links.
+        # We specifically want the normal article permalink.
+        link = None
+
+        for link_element in entry.findall("atom:link", atom):
+            if link_element.get("rel") == "alternate":
+                link = link_element.get("href")
+                break
 
         if not title or not link:
             continue
@@ -204,8 +224,8 @@ def fetch_judith_weingarten_current():
             "author": "Judith Weingarten",
             "title": title.strip(),
             "url": link.strip(),
-            "published_date": pub_date.strip() if pub_date else None,
-            "summary": description.strip() if description else None,
+            "published_date": published.strip() if published else None,
+            "summary": summary.strip() if summary else None,
             "archive": False
         })
 
