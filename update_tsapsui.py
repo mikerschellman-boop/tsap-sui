@@ -22,10 +22,10 @@ SFI_ARCHIVE_FILE = "sfi_archive.json"
 # TEST CONTROLS
 # ==========================================
 
-TEST_MODE = False
-TEST_SOURCE = "rogue_classicism"
+TEST_MODE = True
+TEST_SOURCE = "judith_weingarten"
 
-DRY_RUN = True
+DRY_RUN = False
 
 
 def get_issue_date():
