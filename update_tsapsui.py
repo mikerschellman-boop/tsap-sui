@@ -341,15 +341,15 @@ if TEST_MODE:
             print(article["url"])
             print()
 
-elif TEST_SOURCE == "judith_weingarten":
-    articles = fetch_judith_weingarten_current()
+    elif TEST_SOURCE == "judith_weingarten":
+        articles = fetch_judith_weingarten_current()
 
-    print(f"Found {len(articles)} Judith Weingarten articles.")
+        print(f"Found {len(articles)} Judith Weingarten articles.")
 
-    for article in articles[:5]:
-        print(article["title"])
-        print(article["url"])
-        print()
+        for article in articles[:5]:
+            print(article["title"])
+            print(article["url"])
+            print()
 
     elif TEST_SOURCE == "rogue_classicism":
         articles = fetch_rogue_classicism_current()
