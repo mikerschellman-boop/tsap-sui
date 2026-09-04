@@ -23,7 +23,7 @@ SFI_ARCHIVE_FILE = "sfi_archive.json"
 # ==========================================
 
 TEST_MODE = True
-TEST_SOURCE = "taijiquan_journal"
+TEST_SOURCE = "rogue_classicism"
 
 
 def get_issue_date():
@@ -311,6 +311,26 @@ if TEST_MODE:
             print(article["url"])
             print()
 
+    elif TEST_SOURCE == "judith_weingarten":
+        articles = fetch_judith_weingarten_current()
+
+        print(f"Found {len(articles)} Judith Weingarten articles.")
+
+        for article in articles[:5]:
+            print(article["title"])
+            print(article["url"])
+            print()
+
+    elif TEST_SOURCE == "rogue_classicism":
+        articles = fetch_rogue_classicism_current()
+
+        print(f"Found {len(articles)} Rogue Classicism bulletins.")
+
+        for article in articles[:5]:
+            print(article["title"])
+            print(article["url"])
+            print()
+
     else:
         print(f"Unknown test source: {TEST_SOURCE}")
 
@@ -470,7 +490,7 @@ data = {
     "updated": str(date.today()),
     "sections": {
         "complexity": [selected_for_output],
-        "taiji": [taiji_selected_for_output]
+        "taiji": [taiji_selected_for_output],
         "history": [judith_selected_for_output]
     }
 }
