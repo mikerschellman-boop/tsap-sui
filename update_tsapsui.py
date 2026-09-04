@@ -479,6 +479,50 @@ else:
 
     save_history(history)
 
+# ==========================================
+# ROGUE CLASSICISM WEEKLY SELECTION
+# ==========================================
+
+rogue_current_issue = history["rogue_classicism"]["current_issue"]
+
+if (
+    rogue_current_issue
+    and rogue_current_issue.get("issue_date") == issue_date
+):
+    rogue_selected = rogue_current_issue["article"]
+    print("Rogue Classicism already selected for this week's issue.")
+
+else:
+    rogue_published_urls = set(
+        history["rogue_classicism"]["published"]
+    )
+
+    rogue_articles = fetch_rogue_classicism_current()
+
+    rogue_unpublished = [
+        article
+        for article in rogue_articles
+        if article["url"] not in rogue_published_urls
+    ]
+
+    if not rogue_unpublished:
+        raise RuntimeError(
+            "No unseen Rogue Classicism bulletins were found."
+        )
+
+    rogue_selected = rogue_unpublished[0]
+
+    history["rogue_classicism"]["published"].append(
+        rogue_selected["url"]
+    )
+
+    history["rogue_classicism"]["current_issue"] = {
+        "issue_date": issue_date,
+        "article": rogue_selected
+    }
+
+    save_history(history)
+
 # The displayed date is the Tsap Sui issue date.
 selected_for_output = dict(selected)
 selected_for_output["date"] = issue_date
