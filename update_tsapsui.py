@@ -327,12 +327,12 @@ if TEST_MODE:
             timeout=30,
             headers={"User-Agent": "Mozilla/5.0"}
         )
-    response.raise_for_status()
+        response.raise_for_status()
 
-    print("Final URL:", response.url)
-    print("Content type:", response.headers.get("Content-Type"))
-    print()
-    print(response.text[:2000])
+        print("Final URL:", response.url)
+        print("Content type:", response.headers.get("Content-Type"))
+        print()
+        print(response.text[:2000])
 
     elif TEST_SOURCE == "rogue_classicism":
         articles = fetch_rogue_classicism_current()
