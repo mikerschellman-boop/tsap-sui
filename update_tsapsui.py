@@ -25,6 +25,8 @@ SFI_ARCHIVE_FILE = "sfi_archive.json"
 TEST_MODE = True
 TEST_SOURCE = "rogue_classicism"
 
+DRY_RUN = False
+
 
 def get_issue_date():
     """Return the most recent Sunday."""
@@ -60,6 +62,10 @@ def load_history():
 
 
 def save_history(history):
+    if DRY_RUN:
+        print("DRY RUN: history.json not written.")
+        return
+
     with open(HISTORY_FILE, "w", encoding="utf-8") as f:
         json.dump(history, f, indent=2, ensure_ascii=False)
 
