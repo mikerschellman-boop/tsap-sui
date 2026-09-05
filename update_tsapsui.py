@@ -29,8 +29,8 @@ SFI_ARCHIVE_FILE = "sfi_archive.json"
 # TEST CONTROLS
 # ==========================================
 
-TEST_MODE = False
-TEST_SOURCE = "judith_weingarten"
+TEST_MODE = True
+TEST_SOURCE = "esoterica"
 
 DRY_RUN = True
 
@@ -355,6 +355,82 @@ def fetch_intertextual_bible_current():
         "https://intertextualbible.substack.com/"
     )
 
+# ==========================================
+# BENEBELL WEN COLLECTOR
+# ==========================================
+
+def fetch_benebell_wen_current():
+    response = requests.get(
+        BENEBELL_WEN_FEED,
+        timeout=30,
+        headers={"User-Agent": "Mozilla/5.0"}
+    )
+    response.raise_for_status()
+
+    root = ET.fromstring(response.content)
+    articles = []
+
+    for item in root.findall(".//item"):
+        title = item.findtext("title")
+        link = item.findtext("link")
+        pub_date = item.findtext("pubDate")
+        description = item.findtext("description")
+
+        if not title or not link:
+            continue
+
+        # Don't surface protected material in Tsap Sui.
+        title_lower = title.lower()
+        if "protected:" in title_lower:
+            continue
+
+        articles.append({
+            "source": "Benebell Wen",
+            "author": "Benebell Wen",
+            "title": title.strip(),
+            "url": link.strip(),
+            "published_date": pub_date.strip() if pub_date else None,
+            "summary": None,
+            "archive": False
+        })
+
+    return articles
+
+
+# ==========================================
+# DIGITAL AMBLER COLLECTOR
+# ==========================================
+
+def fetch_digital_ambler_current():
+    response = requests.get(
+        DIGITAL_AMBLER_FEED,
+        timeout=30,
+        headers={"User-Agent": "Mozilla/5.0"}
+    )
+    response.raise_for_status()
+
+    root = ET.fromstring(response.content)
+    articles = []
+
+    for item in root.findall(".//item"):
+        title = item.findtext("title")
+        link = item.findtext("link")
+        pub_date = item.findtext("pubDate")
+
+        if not title or not link:
+            continue
+
+        articles.append({
+            "source": "The Digital Ambler",
+            "author": "Sam Block",
+            "title": title.strip(),
+            "url": link.strip(),
+            "published_date": pub_date.strip() if pub_date else None,
+            "summary": None,
+            "archive": False
+        })
+
+    return articles
 
 # ==========================================
 # CASSIE / SERIOUSLY MEDIEVAL COLLECTOR
@@ -616,6 +692,22 @@ if TEST_MODE:
         print(f"Found {len(articles)} Rogue Classicism bulletins.")
 
         for article in articles[:5]:
+            print(article["title"])
+            print(article["url"])
+            print()
+
+        elif TEST_SOURCE == "esoterica":
+        benebell_articles = fetch_benebell_wen_current()
+        digital_ambler_articles = fetch_digital_ambler_current()
+
+        print(f"Found {len(benebell_articles)} Benebell Wen articles.")
+        for article in benebell_articles[:5]:
+            print(article["title"])
+            print(article["url"])
+            print()
+
+        print(f"Found {len(digital_ambler_articles)} Digital Ambler articles.")
+        for article in digital_ambler_articles[:5]:
             print(article["title"])
             print(article["url"])
             print()
