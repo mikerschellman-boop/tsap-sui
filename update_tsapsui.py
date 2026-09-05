@@ -19,6 +19,7 @@ ROGUE_CLASSICISM_FEED = "https://rogueclassicism.com/feed"
 LIVING_TAO_STUDY = "https://livingtao.org/seminars/study-materials/"
 BENEBELL_WEN_FEED = "https://benebellwen.com/feed/"
 DIGITAL_AMBLER_FEED = "https://digitalambler.com/feed/"
+GOETEIA_BLOG = "https://goeteia.com/blog"
 
 HISTORY_FILE = "history.json"
 OUTPUT_FILE = "tsapsui.json"
@@ -433,6 +434,79 @@ def fetch_digital_ambler_current():
     return articles
 
 # ==========================================
+# GOETEIA / FRATER ACHER COLLECTOR
+# ==========================================
+
+def fetch_goeteia_current():
+    response = requests.get(
+        GOETEIA_BLOG,
+        timeout=30,
+        headers={"User-Agent": "Mozilla/5.0"}
+    )
+    response.raise_for_status()
+
+    soup = BeautifulSoup(response.text, "html.parser")
+    articles = []
+
+    for article in soup.select("article"):
+        title_link = article.select_one(
+            "h1 a, h2 a, h3 a, .blog-title a, .entry-title a"
+        )
+
+        if not title_link:
+            continue
+
+        title = " ".join(
+            title_link.get_text(" ", strip=True).split()
+        )
+
+        href = title_link.get("href")
+
+        if not title or not href:
+            continue
+
+        url = urljoin(GOETEIA_BLOG, href)
+
+        # Keep only actual Goêteia blog entries.
+        if url.rstrip("/") == GOETEIA_BLOG.rstrip("/"):
+            continue
+
+        date_element = article.select_one(
+            "time, .blog-date, .entry-date, .published"
+        )
+
+        published_date = (
+            " ".join(date_element.get_text(" ", strip=True).split())
+            if date_element
+            else None
+        )
+
+        excerpt_element = article.select_one(
+            ".blog-excerpt, .entry-excerpt, .excerpt, p"
+        )
+
+        summary = (
+            " ".join(excerpt_element.get_text(" ", strip=True).split())
+            if excerpt_element
+            else None
+        )
+
+        if any(existing["url"] == url for existing in articles):
+            continue
+
+        articles.append({
+            "source": "Goêteia",
+            "author": "Frater Acher",
+            "title": title,
+            "url": url,
+            "published_date": published_date,
+            "summary": summary,
+            "archive": False
+        })
+
+    return articles
+
+# ==========================================
 # CASSIE / SERIOUSLY MEDIEVAL COLLECTOR
 # ==========================================
 
@@ -699,6 +773,7 @@ if TEST_MODE:
     elif TEST_SOURCE == "esoterica":
         benebell_articles = fetch_benebell_wen_current()
         digital_ambler_articles = fetch_digital_ambler_current()
+        goeteia_articles = fetch_goeteia_current()
 
         print(f"Found {len(benebell_articles)} Benebell Wen articles.")
 
@@ -710,6 +785,13 @@ if TEST_MODE:
         print(f"Found {len(digital_ambler_articles)} Digital Ambler articles.")
 
         for article in digital_ambler_articles[:5]:
+            print(article["title"])
+            print(article["url"])
+            print()
+
+            print(f"Found {len(goeteia_articles)} Goêteia articles.")
+
+        for article in goeteia_articles[:5]:
             print(article["title"])
             print(article["url"])
             print()
