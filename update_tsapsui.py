@@ -452,14 +452,27 @@ def fetch_goeteia_current():
 
     print(f"Goêteia page returned {len(links)} links total.")
 
-    for link in links[:50]:
+    seen = set()
+
+    for link in links:
         text = " ".join(link.get_text(" ", strip=True).split())
         href = link.get("href")
 
-        if text or href:
-            print("TEXT:", repr(text))
-            print("HREF:", repr(href))
-            print()
+        if not text or not href:
+            continue
+
+        # Ignore short navigation labels so we can see likely article titles.
+        if len(text) < 20:
+            continue
+
+        if href in seen:
+            continue
+
+        seen.add(href)
+
+        print("TEXT:", repr(text))
+        print("HREF:", repr(href))
+        print()
             
     return articles
     
