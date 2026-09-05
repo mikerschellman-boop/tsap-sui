@@ -17,6 +17,8 @@ TAIJIQUAN_JOURNAL_FEED = "https://taijiquanjournal.blogspot.com/feeds/posts/defa
 JUDITH_WEINGARTEN_FEED = "https://judithweingarten.blogspot.com/feeds/posts/default?alt=rss"
 ROGUE_CLASSICISM_FEED = "https://rogueclassicism.com/feed"
 LIVING_TAO_STUDY = "https://livingtao.org/seminars/study-materials/"
+BENEBELL_WEN_FEED = "https://benebellwen.com/feed/"
+DIGITAL_AMBLER_FEED = "https://digitalambler.com/feed/"
 
 HISTORY_FILE = "history.json"
 OUTPUT_FILE = "tsapsui.json"
