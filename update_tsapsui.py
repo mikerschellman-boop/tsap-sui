@@ -759,7 +759,7 @@ if TEST_MODE:
             print(article["url"])
             print()
 
-            print(f"Found {len(goeteia_articles)} Goêteia articles.")
+        print(f"Found {len(goeteia_articles)} Goêteia articles.")
 
         for article in goeteia_articles[:5]:
             print(article["title"])
