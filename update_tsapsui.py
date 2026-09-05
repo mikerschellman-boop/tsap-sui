@@ -1,4 +1,5 @@
 import json
+import html
 import requests
 from bs4 import BeautifulSoup
 from datetime import date, timedelta
@@ -284,7 +285,7 @@ def fetch_slow_peace_current():
         if not title or not link:
             continue
 
-        summary = description.strip() if description else None
+        summary = html.unescape(description.strip()) if description else None
         summary_lower = summary.lower() if summary else ""
 
         # Slow Peace identifies paid-only material in its public RSS teaser.
