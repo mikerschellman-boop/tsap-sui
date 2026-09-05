@@ -448,50 +448,32 @@ def fetch_goeteia_current():
     soup = BeautifulSoup(response.text, "html.parser")
     articles = []
 
-    for article in soup.select("article"):
-        title_link = article.select_one(
-            "h1 a, h2 a, h3 a, .blog-title a, .entry-title a"
-        )
+    for link in soup.find_all("a", href=True):
+        title = " ".join(link.get_text(" ", strip=True).split())
+        href = link["href"]
 
-        if not title_link:
-            continue
-
-        title = " ".join(
-            title_link.get_text(" ", strip=True).split()
-        )
-
-        href = title_link.get("href")
-
-        if not title or not href:
+        if not title:
             continue
 
         url = urljoin(GOETEIA_BLOG, href)
 
-        # Keep only actual Goêteia blog entries.
+        # Individual Goêteia blog posts use /blog/... URLs.
+        if "/blog/" not in url:
+            continue
+
+        # Skip the blog index itself.
         if url.rstrip("/") == GOETEIA_BLOG.rstrip("/"):
             continue
 
-        date_element = article.select_one(
-            "time, .blog-date, .entry-date, .published"
-        )
+        # Skip duplicate "Read more" links and other generic link text.
+        if title.lower() in {
+            "read more",
+            "read more →",
+            "blog"
+        }:
+            continue
 
-        published_date = (
-            " ".join(date_element.get_text(" ", strip=True).split())
-            if date_element
-            else None
-        )
-
-        excerpt_element = article.select_one(
-            ".blog-excerpt, .entry-excerpt, .excerpt, p"
-        )
-
-        summary = (
-            " ".join(excerpt_element.get_text(" ", strip=True).split())
-            if excerpt_element
-            else None
-        )
-
-        if any(existing["url"] == url for existing in articles):
+        if any(article["url"] == url for article in articles):
             continue
 
         articles.append({
@@ -499,13 +481,13 @@ def fetch_goeteia_current():
             "author": "Frater Acher",
             "title": title,
             "url": url,
-            "published_date": published_date,
-            "summary": summary,
+            "published_date": None,
+            "summary": None,
             "archive": False
         })
 
     return articles
-
+    
 # ==========================================
 # CASSIE / SERIOUSLY MEDIEVAL COLLECTOR
 # ==========================================
