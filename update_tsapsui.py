@@ -8,6 +8,7 @@ import xml.etree.ElementTree as ET
 
 SFI_HOME = "https://www.santafe.edu/"
 HEYLIGHEN_FEED = "https://square-sunset-4b67.mike-r-schellman.workers.dev/feed/heylighen"
+CASSIE_FEED = "https://square-sunset-4b67.mike-r-schellman.workers.dev/feed/cassie"
 TAIJIQUAN_JOURNAL_FEED = "https://taijiquanjournal.blogspot.com/feeds/posts/default?alt=rss"
 JUDITH_WEINGARTEN_FEED = "https://judithweingarten.blogspot.com/feeds/posts/default?alt=rss"
 ROGUE_CLASSICISM_FEED = "https://rogueclassicism.com/feed"
@@ -57,6 +58,10 @@ def load_history():
     history.setdefault("judith_weingarten", {})
     history["judith_weingarten"].setdefault("published", [])
     history["judith_weingarten"].setdefault("current_issue", None)
+
+    history.setdefault("cassie", {})
+    history["cassie"].setdefault("published", [])
+    history["cassie"].setdefault("current_issue", None)
 
     history.setdefault("rogue_classicism", {})
     history["rogue_classicism"].setdefault("published", [])
@@ -214,6 +219,43 @@ def fetch_taijiquan_journal_current():
             "url": link.strip(),
             "published_date": pub_date.strip() if pub_date else None,
             "summary": None,
+            "archive": False
+        })
+
+    return articles
+
+
+# ==========================================
+# CASSIE / SERIOUSLY MEDIEVAL COLLECTOR
+# ==========================================
+
+def fetch_cassie_current():
+    response = requests.get(
+        CASSIE_FEED,
+        timeout=30,
+        headers={"User-Agent": "Mozilla/5.0"}
+    )
+    response.raise_for_status()
+
+    root = ET.fromstring(response.content)
+    articles = []
+
+    for item in root.findall(".//item"):
+        title = item.findtext("title")
+        link = item.findtext("link")
+        pub_date = item.findtext("pubDate")
+        description = item.findtext("description")
+
+        if not title or not link:
+            continue
+
+        articles.append({
+            "source": "Seriously Medieval",
+            "author": "Cassie Beyer",
+            "title": title.strip(),
+            "url": link.strip(),
+            "published_date": pub_date.strip() if pub_date else None,
+            "summary": description.strip() if description else None,
             "archive": False
         })
 
@@ -386,6 +428,16 @@ if TEST_MODE:
         articles = fetch_taijiquan_journal_current()
 
         print(f"Found {len(articles)} Taijiquan Journal articles.")
+
+        for article in articles[:5]:
+            print(article["title"])
+            print(article["url"])
+            print()
+
+    elif TEST_SOURCE == "cassie":
+        articles = fetch_cassie_current()
+
+        print(f"Found {len(articles)} Cassie Beyer articles.")
 
         for article in articles[:5]:
             print(article["title"])
@@ -602,6 +654,51 @@ else:
     save_history(history)
 
 # ==========================================
+# CASSIE / SERIOUSLY MEDIEVAL WEEKLY SELECTION
+# ==========================================
+
+cassie_current_issue = history["cassie"]["current_issue"]
+
+if (
+    cassie_current_issue
+    and cassie_current_issue.get("issue_date") == issue_date
+):
+    cassie_selected = cassie_current_issue["article"]
+    print("Cassie Beyer already selected for this week's issue.")
+
+else:
+    cassie_published_urls = set(
+        history["cassie"]["published"]
+    )
+
+    cassie_articles = fetch_cassie_current()
+
+    cassie_unpublished = [
+        article
+        for article in cassie_articles
+        if article["url"] not in cassie_published_urls
+    ]
+
+    if not cassie_unpublished:
+        raise RuntimeError(
+            "No unseen Cassie Beyer articles were found."
+        )
+
+    cassie_selected = cassie_unpublished[0]
+
+    history["cassie"]["published"].append(
+        cassie_selected["url"]
+    )
+
+    history["cassie"]["current_issue"] = {
+        "issue_date": issue_date,
+        "article": cassie_selected
+    }
+
+    save_history(history)
+
+
+# ==========================================
 # ROGUE CLASSICISM WEEKLY SELECTION
 # ==========================================
 
@@ -658,6 +755,9 @@ taiji_selected_for_output["date"] = issue_date
 judith_selected_for_output = dict(judith_selected)
 judith_selected_for_output["date"] = issue_date
 
+cassie_selected_for_output = dict(cassie_selected)
+cassie_selected_for_output["date"] = issue_date
+
 rogue_selected_for_output = dict(rogue_selected)
 rogue_selected_for_output["date"] = issue_date
 
@@ -672,6 +772,7 @@ data = {
         "taiji": [taiji_selected_for_output],
         "history": [
             judith_selected_for_output,
+            cassie_selected_for_output,
             rogue_selected_for_output
         ]
     }
