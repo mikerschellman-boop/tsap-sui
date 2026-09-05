@@ -7,7 +7,7 @@ import xml.etree.ElementTree as ET
 
 
 SFI_HOME = "https://www.santafe.edu/"
-HEYLIGHEN_FEED = "https://francisheylighen.substack.com/feed"
+HEYLIGHEN_FEED = "https://square-sunset-4b67.mike-r-schellman.workers.dev/feed/heylighen"
 TAIJIQUAN_JOURNAL_FEED = "https://taijiquanjournal.blogspot.com/feeds/posts/default?alt=rss"
 JUDITH_WEINGARTEN_FEED = "https://judithweingarten.blogspot.com/feeds/posts/default?alt=rss"
 ROGUE_CLASSICISM_FEED = "https://rogueclassicism.com/feed"
@@ -45,6 +45,10 @@ def load_history():
     history.setdefault("sfi", {})
     history["sfi"].setdefault("published", [])
     history["sfi"].setdefault("current_issue", None)
+
+    history.setdefault("heylighen", {})
+    history["heylighen"].setdefault("published", [])
+    history["heylighen"].setdefault("current_issue", None)
 
     history.setdefault("taijiquan_journal", {})
     history["taijiquan_journal"].setdefault("published", [])
@@ -140,6 +144,43 @@ def fetch_sfi_archive(published_urls):
             }
 
     return None
+
+
+# ==========================================
+# FRANCIS HEYLIGHEN COLLECTOR
+# ==========================================
+
+def fetch_heylighen_current():
+    response = requests.get(
+        HEYLIGHEN_FEED,
+        timeout=30,
+        headers={"User-Agent": "Mozilla/5.0"}
+    )
+    response.raise_for_status()
+
+    root = ET.fromstring(response.content)
+    articles = []
+
+    for item in root.findall(".//item"):
+        title = item.findtext("title")
+        link = item.findtext("link")
+        pub_date = item.findtext("pubDate")
+        description = item.findtext("description")
+
+        if not title or not link:
+            continue
+
+        articles.append({
+            "source": "The Self-Organizing Universe",
+            "author": "Francis Heylighen",
+            "title": title.strip(),
+            "url": link.strip(),
+            "published_date": pub_date.strip() if pub_date else None,
+            "summary": description.strip() if description else None,
+            "archive": False
+        })
+
+    return articles
 
 
 # ==========================================
@@ -331,6 +372,16 @@ if TEST_MODE:
     if TEST_SOURCE is None:
         print("No collector selected for testing.")
 
+    elif TEST_SOURCE == "heylighen":
+        articles = fetch_heylighen_current()
+
+        print(f"Found {len(articles)} Francis Heylighen articles.")
+
+        for article in articles[:5]:
+            print(article["title"])
+            print(article["url"])
+            print()
+
     elif TEST_SOURCE == "taijiquan_journal":
         articles = fetch_taijiquan_journal_current()
 
@@ -416,6 +467,51 @@ else:
     }
 
     save_history(history)
+
+# ==========================================
+# FRANCIS HEYLIGHEN WEEKLY SELECTION
+# ==========================================
+
+heylighen_current_issue = history["heylighen"]["current_issue"]
+
+if (
+    heylighen_current_issue
+    and heylighen_current_issue.get("issue_date") == issue_date
+):
+    heylighen_selected = heylighen_current_issue["article"]
+    print("Francis Heylighen already selected for this week's issue.")
+
+else:
+    heylighen_published_urls = set(
+        history["heylighen"]["published"]
+    )
+
+    heylighen_articles = fetch_heylighen_current()
+
+    heylighen_unpublished = [
+        article
+        for article in heylighen_articles
+        if article["url"] not in heylighen_published_urls
+    ]
+
+    if not heylighen_unpublished:
+        raise RuntimeError(
+            "No unseen Francis Heylighen articles were found."
+        )
+
+    heylighen_selected = heylighen_unpublished[0]
+
+    history["heylighen"]["published"].append(
+        heylighen_selected["url"]
+    )
+
+    history["heylighen"]["current_issue"] = {
+        "issue_date": issue_date,
+        "article": heylighen_selected
+    }
+
+    save_history(history)
+
 
 # ==========================================
 # TAIJIQUAN JOURNAL WEEKLY SELECTION
@@ -553,6 +649,9 @@ else:
 selected_for_output = dict(selected)
 selected_for_output["date"] = issue_date
 
+heylighen_selected_for_output = dict(heylighen_selected)
+heylighen_selected_for_output["date"] = issue_date
+
 taiji_selected_for_output = dict(taiji_selected)
 taiji_selected_for_output["date"] = issue_date
 
@@ -566,7 +665,10 @@ data = {
     "issue_date": issue_date,
     "updated": str(date.today()),
     "sections": {
-        "complexity": [selected_for_output],
+        "complexity": [
+            selected_for_output,
+            heylighen_selected_for_output
+        ],
         "taiji": [taiji_selected_for_output],
         "history": [
             judith_selected_for_output,
