@@ -696,17 +696,19 @@ if TEST_MODE:
             print(article["url"])
             print()
 
-        elif TEST_SOURCE == "esoterica":
+    elif TEST_SOURCE == "esoterica":
         benebell_articles = fetch_benebell_wen_current()
         digital_ambler_articles = fetch_digital_ambler_current()
 
         print(f"Found {len(benebell_articles)} Benebell Wen articles.")
+
         for article in benebell_articles[:5]:
             print(article["title"])
             print(article["url"])
             print()
 
         print(f"Found {len(digital_ambler_articles)} Digital Ambler articles.")
+
         for article in digital_ambler_articles[:5]:
             print(article["title"])
             print(article["url"])
