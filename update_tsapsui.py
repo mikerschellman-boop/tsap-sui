@@ -172,7 +172,7 @@ def fetch_taijiquan_journal_current():
             "title": title.strip(),
             "url": link.strip(),
             "published_date": pub_date.strip() if pub_date else None,
-            "summary": description.strip() if description else None,
+            "summary": None,
             "archive": False
         })
 
@@ -225,8 +225,8 @@ def fetch_judith_weingarten_current():
             "title": title.strip(),
             "url": link.strip(),
             "published_date": published.strip() if published else None,
-            "summary": summary.strip() if summary else None,
-            "archive": False
+            "summary": None,
+            "archive": True
         })
 
     return articles
@@ -263,7 +263,7 @@ def fetch_rogue_classicism_current():
             "title": title,
             "url": link.strip(),
             "published_date": pub_date.strip() if pub_date else None,
-            "summary": description.strip() if description else None,
+            "summary": None,
             "archive": False
         })
 
