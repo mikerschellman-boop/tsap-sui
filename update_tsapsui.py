@@ -10,6 +10,9 @@ SFI_HOME = "https://www.santafe.edu/"
 HEYLIGHEN_FEED = "https://square-sunset-4b67.mike-r-schellman.workers.dev/feed/heylighen"
 CASSIE_FEED = "https://square-sunset-4b67.mike-r-schellman.workers.dev/feed/cassie"
 SLOW_PEACE_FEED = "https://square-sunset-4b67.mike-r-schellman.workers.dev/feed/slowpeace"
+JAMES_KA_SMITH_FEED = "https://square-sunset-4b67.mike-r-schellman.workers.dev/feed/jameskasmith"
+PROCESS_THIS_FEED = "https://square-sunset-4b67.mike-r-schellman.workers.dev/feed/processthis"
+INTERTEXTUAL_BIBLE_FEED = "https://square-sunset-4b67.mike-r-schellman.workers.dev/feed/intertextualbible"
 TAIJIQUAN_JOURNAL_FEED = "https://taijiquanjournal.blogspot.com/feeds/posts/default?alt=rss"
 JUDITH_WEINGARTEN_FEED = "https://judithweingarten.blogspot.com/feeds/posts/default?alt=rss"
 ROGUE_CLASSICISM_FEED = "https://rogueclassicism.com/feed"
@@ -59,6 +62,18 @@ def load_history():
     history.setdefault("slow_peace", {})
     history["slow_peace"].setdefault("published", [])
     history["slow_peace"].setdefault("current_issue", None)
+
+    history.setdefault("james_ka_smith", {})
+    history["james_ka_smith"].setdefault("published", [])
+    history["james_ka_smith"].setdefault("current_issue", None)
+
+    history.setdefault("process_this", {})
+    history["process_this"].setdefault("published", [])
+    history["process_this"].setdefault("current_issue", None)
+
+    history.setdefault("intertextual_bible", {})
+    history["intertextual_bible"].setdefault("published", [])
+    history["intertextual_bible"].setdefault("current_issue", None)
 
     history.setdefault("judith_weingarten", {})
     history["judith_weingarten"].setdefault("published", [])
@@ -280,6 +295,66 @@ def fetch_slow_peace_current():
 
 
 # ==========================================
+# CHRISTIANITY / SUBSTACK COLLECTORS
+# ==========================================
+
+def fetch_substack_current(feed_url, source, author=None, support_url=None):
+    """Collect only metadata exposed by the public RSS feed."""
+    response = requests.get(feed_url, timeout=30, headers={"User-Agent": "Mozilla/5.0"})
+    response.raise_for_status()
+    root = ET.fromstring(response.content)
+    articles = []
+
+    for item in root.findall(".//item"):
+        title = item.findtext("title")
+        link = item.findtext("link")
+        pub_date = item.findtext("pubDate")
+        description = item.findtext("description")
+        if not title or not link:
+            continue
+
+        summary = description.strip() if description else None
+        lower = summary.lower() if summary else ""
+        access = "subscription" if any(
+            phrase in lower for phrase in ("paid subscriber", "paid-only", "paid subscription")
+        ) else "open"
+
+        article = {
+            "source": source, "title": title.strip(), "url": link.strip(),
+            "published_date": pub_date.strip() if pub_date else None,
+            "summary": summary, "access": access, "archive": False
+        }
+        if author:
+            article["author"] = author
+        if support_url:
+            article["support_url"] = support_url
+            article["support_label"] = "Support this writer"
+        articles.append(article)
+    return articles
+
+
+def fetch_james_ka_smith_current():
+    return fetch_substack_current(
+        JAMES_KA_SMITH_FEED, "Quid Amo", "James K.A. Smith",
+        "https://jameskasmith.substack.com/"
+    )
+
+
+def fetch_process_this_current():
+    return fetch_substack_current(
+        PROCESS_THIS_FEED, "Process This", "Tripp Fuller",
+        "https://processthis.substack.com/"
+    )
+
+
+def fetch_intertextual_bible_current():
+    return fetch_substack_current(
+        INTERTEXTUAL_BIBLE_FEED, "Intertextual Bible", None,
+        "https://intertextualbible.substack.com/"
+    )
+
+
+# ==========================================
 # CASSIE / SERIOUSLY MEDIEVAL COLLECTOR
 # ==========================================
 
@@ -493,6 +568,20 @@ if TEST_MODE:
 
         print(f"Found {len(articles)} Slow Peace articles.")
 
+        for article in articles[:5]:
+            print(article["title"])
+            print(f"Access: {article['access']}")
+            print(article["url"])
+            print()
+
+    elif TEST_SOURCE in {"james_ka_smith", "process_this", "intertextual_bible"}:
+        fetchers = {
+            "james_ka_smith": fetch_james_ka_smith_current,
+            "process_this": fetch_process_this_current,
+            "intertextual_bible": fetch_intertextual_bible_current,
+        }
+        articles = fetchers[TEST_SOURCE]()
+        print(f"Found {len(articles)} {TEST_SOURCE} articles.")
         for article in articles[:5]:
             print(article["title"])
             print(f"Access: {article['access']}")
@@ -720,6 +809,41 @@ else:
 
 
 # ==========================================
+# CHRISTIANITY WEEKLY SELECTIONS
+# ==========================================
+
+def select_weekly_article(history, history_key, issue_date, fetcher, display_name):
+    current_issue = history[history_key]["current_issue"]
+    if current_issue and current_issue.get("issue_date") == issue_date:
+        print(f"{display_name} already selected for this week's issue.")
+        return current_issue["article"]
+
+    published_urls = set(history[history_key]["published"])
+    unpublished = [a for a in fetcher() if a["url"] not in published_urls]
+    if not unpublished:
+        raise RuntimeError(f"No unseen {display_name} articles were found.")
+
+    selected_article = unpublished[0]
+    history[history_key]["published"].append(selected_article["url"])
+    history[history_key]["current_issue"] = {
+        "issue_date": issue_date, "article": selected_article
+    }
+    save_history(history)
+    return selected_article
+
+
+james_ka_smith_selected = select_weekly_article(
+    history, "james_ka_smith", issue_date, fetch_james_ka_smith_current, "James K.A. Smith"
+)
+process_this_selected = select_weekly_article(
+    history, "process_this", issue_date, fetch_process_this_current, "Process This"
+)
+intertextual_bible_selected = select_weekly_article(
+    history, "intertextual_bible", issue_date, fetch_intertextual_bible_current, "Intertextual Bible"
+)
+
+
+# ==========================================
 # JUDITH WEINGARTEN WEEKLY SELECTION
 # ==========================================
 
@@ -865,6 +989,15 @@ taiji_selected_for_output["date"] = issue_date
 slow_peace_selected_for_output = dict(slow_peace_selected)
 slow_peace_selected_for_output["date"] = issue_date
 
+james_ka_smith_selected_for_output = dict(james_ka_smith_selected)
+james_ka_smith_selected_for_output["date"] = issue_date
+
+process_this_selected_for_output = dict(process_this_selected)
+process_this_selected_for_output["date"] = issue_date
+
+intertextual_bible_selected_for_output = dict(intertextual_bible_selected)
+intertextual_bible_selected_for_output["date"] = issue_date
+
 judith_selected_for_output = dict(judith_selected)
 judith_selected_for_output["date"] = issue_date
 
@@ -890,6 +1023,11 @@ data = {
             judith_selected_for_output,
             cassie_selected_for_output,
             rogue_selected_for_output
+        ],
+        "christianity": [
+            james_ka_smith_selected_for_output,
+            process_this_selected_for_output,
+            intertextual_bible_selected_for_output
         ]
     }
 }
