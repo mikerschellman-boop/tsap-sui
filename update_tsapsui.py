@@ -448,44 +448,19 @@ def fetch_goeteia_current():
     soup = BeautifulSoup(response.text, "html.parser")
     articles = []
 
-    for link in soup.find_all("a", href=True):
-        title = " ".join(link.get_text(" ", strip=True).split())
-        href = link["href"]
+    links = soup.find_all("a", href=True)
 
-        if not title:
-            continue
+    print(f"Goêteia page returned {len(links)} links total.")
 
-        url = urljoin(GOETEIA_BLOG, href)
+    for link in links[:50]:
+        text = " ".join(link.get_text(" ", strip=True).split())
+        href = link.get("href")
 
-        # Individual Goêteia blog posts use /blog/... URLs.
-        if "/blog/" not in url:
-            continue
-
-        # Skip the blog index itself.
-        if url.rstrip("/") == GOETEIA_BLOG.rstrip("/"):
-            continue
-
-        # Skip duplicate "Read more" links and other generic link text.
-        if title.lower() in {
-            "read more",
-            "read more →",
-            "blog"
-        }:
-            continue
-
-        if any(article["url"] == url for article in articles):
-            continue
-
-        articles.append({
-            "source": "Goêteia",
-            "author": "Frater Acher",
-            "title": title,
-            "url": url,
-            "published_date": None,
-            "summary": None,
-            "archive": False
-        })
-
+        if text or href:
+            print("TEXT:", repr(text))
+            print("HREF:", repr(href))
+            print()
+            
     return articles
     
 # ==========================================
