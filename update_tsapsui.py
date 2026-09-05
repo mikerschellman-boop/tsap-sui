@@ -30,7 +30,7 @@ SFI_ARCHIVE_FILE = "sfi_archive.json"
 # TEST CONTROLS
 # ==========================================
 
-TEST_MODE = True
+TEST_MODE = False
 TEST_SOURCE = "esoterica"
 
 DRY_RUN = True
@@ -89,6 +89,18 @@ def load_history():
     history.setdefault("rogue_classicism", {})
     history["rogue_classicism"].setdefault("published", [])
     history["rogue_classicism"].setdefault("current_issue", None)
+
+    history.setdefault("benebell_wen", {})
+    history["benebell_wen"].setdefault("published", [])
+    history["benebell_wen"].setdefault("current_issue", None)
+
+    history.setdefault("digital_ambler", {})
+    history["digital_ambler"].setdefault("published", [])
+    history["digital_ambler"].setdefault("current_issue", None)
+
+    history.setdefault("goeteia", {})
+    history["goeteia"].setdefault("published", [])
+    history["goeteia"].setdefault("current_issue", None)
 
     return history
 
@@ -993,6 +1005,21 @@ intertextual_bible_selected = select_weekly_article(
 
 
 # ==========================================
+# ESOTERICA WEEKLY SELECTIONS
+# ==========================================
+
+benebell_wen_selected = select_weekly_article(
+    history, "benebell_wen", issue_date, fetch_benebell_wen_current, "Benebell Wen"
+)
+digital_ambler_selected = select_weekly_article(
+    history, "digital_ambler", issue_date, fetch_digital_ambler_current, "The Digital Ambler"
+)
+goeteia_selected = select_weekly_article(
+    history, "goeteia", issue_date, fetch_goeteia_current, "Goêteia"
+)
+
+
+# ==========================================
 # JUDITH WEINGARTEN WEEKLY SELECTION
 # ==========================================
 
@@ -1147,6 +1174,15 @@ process_this_selected_for_output["date"] = issue_date
 intertextual_bible_selected_for_output = dict(intertextual_bible_selected)
 intertextual_bible_selected_for_output["date"] = issue_date
 
+benebell_wen_selected_for_output = dict(benebell_wen_selected)
+benebell_wen_selected_for_output["date"] = issue_date
+
+digital_ambler_selected_for_output = dict(digital_ambler_selected)
+digital_ambler_selected_for_output["date"] = issue_date
+
+goeteia_selected_for_output = dict(goeteia_selected)
+goeteia_selected_for_output["date"] = issue_date
+
 judith_selected_for_output = dict(judith_selected)
 judith_selected_for_output["date"] = issue_date
 
@@ -1177,6 +1213,11 @@ data = {
             james_ka_smith_selected_for_output,
             process_this_selected_for_output,
             intertextual_bible_selected_for_output
+        ],
+        "esoterica": [
+            benebell_wen_selected_for_output,
+            digital_ambler_selected_for_output,
+            goeteia_selected_for_output
         ]
     }
 }
