@@ -9,6 +9,7 @@ import xml.etree.ElementTree as ET
 SFI_HOME = "https://www.santafe.edu/"
 HEYLIGHEN_FEED = "https://square-sunset-4b67.mike-r-schellman.workers.dev/feed/heylighen"
 CASSIE_FEED = "https://square-sunset-4b67.mike-r-schellman.workers.dev/feed/cassie"
+SLOW_PEACE_FEED = "https://square-sunset-4b67.mike-r-schellman.workers.dev/feed/slowpeace"
 TAIJIQUAN_JOURNAL_FEED = "https://taijiquanjournal.blogspot.com/feeds/posts/default?alt=rss"
 JUDITH_WEINGARTEN_FEED = "https://judithweingarten.blogspot.com/feeds/posts/default?alt=rss"
 ROGUE_CLASSICISM_FEED = "https://rogueclassicism.com/feed"
@@ -54,6 +55,10 @@ def load_history():
     history.setdefault("taijiquan_journal", {})
     history["taijiquan_journal"].setdefault("published", [])
     history["taijiquan_journal"].setdefault("current_issue", None)
+
+    history.setdefault("slow_peace", {})
+    history["slow_peace"].setdefault("published", [])
+    history["slow_peace"].setdefault("current_issue", None)
 
     history.setdefault("judith_weingarten", {})
     history["judith_weingarten"].setdefault("published", [])
@@ -219,6 +224,55 @@ def fetch_taijiquan_journal_current():
             "url": link.strip(),
             "published_date": pub_date.strip() if pub_date else None,
             "summary": None,
+            "archive": False
+        })
+
+    return articles
+
+
+# ==========================================
+# SLOW PEACE COLLECTOR
+# ==========================================
+
+def fetch_slow_peace_current():
+    response = requests.get(
+        SLOW_PEACE_FEED,
+        timeout=30,
+        headers={"User-Agent": "Mozilla/5.0"}
+    )
+    response.raise_for_status()
+
+    root = ET.fromstring(response.content)
+    articles = []
+
+    for item in root.findall(".//item"):
+        title = item.findtext("title")
+        link = item.findtext("link")
+        pub_date = item.findtext("pubDate")
+        description = item.findtext("description")
+
+        if not title or not link:
+            continue
+
+        summary = description.strip() if description else None
+        summary_lower = summary.lower() if summary else ""
+
+        # Slow Peace identifies paid-only material in its public RSS teaser.
+        if "paid subscriber" in summary_lower or "paid-only" in summary_lower:
+            access = "subscription"
+        else:
+            access = "open"
+
+        articles.append({
+            "source": "Slow Peace",
+            "author": "Morgan Buchanan",
+            "title": title.strip(),
+            "url": link.strip(),
+            "published_date": pub_date.strip() if pub_date else None,
+            "summary": summary,
+            "access": access,
+            "support_url": "https://morganbuchanan.substack.com/",
+            "support_label": "Support this writer",
             "archive": False
         })
 
@@ -434,6 +488,17 @@ if TEST_MODE:
             print(article["url"])
             print()
 
+    elif TEST_SOURCE == "slow_peace":
+        articles = fetch_slow_peace_current()
+
+        print(f"Found {len(articles)} Slow Peace articles.")
+
+        for article in articles[:5]:
+            print(article["title"])
+            print(f"Access: {article['access']}")
+            print(article["url"])
+            print()
+
     elif TEST_SOURCE == "cassie":
         articles = fetch_cassie_current()
 
@@ -610,6 +675,51 @@ else:
     save_history(history)
 
 # ==========================================
+# SLOW PEACE WEEKLY SELECTION
+# ==========================================
+
+slow_peace_current_issue = history["slow_peace"]["current_issue"]
+
+if (
+    slow_peace_current_issue
+    and slow_peace_current_issue.get("issue_date") == issue_date
+):
+    slow_peace_selected = slow_peace_current_issue["article"]
+    print("Slow Peace already selected for this week's issue.")
+
+else:
+    slow_peace_published_urls = set(
+        history["slow_peace"]["published"]
+    )
+
+    slow_peace_articles = fetch_slow_peace_current()
+
+    slow_peace_unpublished = [
+        article
+        for article in slow_peace_articles
+        if article["url"] not in slow_peace_published_urls
+    ]
+
+    if not slow_peace_unpublished:
+        raise RuntimeError(
+            "No unseen Slow Peace articles were found."
+        )
+
+    slow_peace_selected = slow_peace_unpublished[0]
+
+    history["slow_peace"]["published"].append(
+        slow_peace_selected["url"]
+    )
+
+    history["slow_peace"]["current_issue"] = {
+        "issue_date": issue_date,
+        "article": slow_peace_selected
+    }
+
+    save_history(history)
+
+
+# ==========================================
 # JUDITH WEINGARTEN WEEKLY SELECTION
 # ==========================================
 
@@ -752,6 +862,9 @@ heylighen_selected_for_output["date"] = issue_date
 taiji_selected_for_output = dict(taiji_selected)
 taiji_selected_for_output["date"] = issue_date
 
+slow_peace_selected_for_output = dict(slow_peace_selected)
+slow_peace_selected_for_output["date"] = issue_date
+
 judith_selected_for_output = dict(judith_selected)
 judith_selected_for_output["date"] = issue_date
 
@@ -769,7 +882,10 @@ data = {
             selected_for_output,
             heylighen_selected_for_output
         ],
-        "taiji": [taiji_selected_for_output],
+        "taiji": [
+            taiji_selected_for_output,
+            slow_peace_selected_for_output
+        ],
         "history": [
             judith_selected_for_output,
             cassie_selected_for_output,
