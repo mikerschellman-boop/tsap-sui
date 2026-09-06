@@ -329,7 +329,7 @@ def fetch_substack_current(feed_url, source, author=None, support_url=None):
         if not title or not link:
             continue
 
-        summary = description.strip() if description else None
+        summary = html.unescape(description.strip()) if description else None
         lower = summary.lower() if summary else ""
         access = "subscription" if any(
             phrase in lower for phrase in ("paid subscriber", "paid-only", "paid subscription")
