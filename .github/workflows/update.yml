@@ -2,11 +2,10 @@ name: Update Tsap Sui
 
 on:
   workflow_dispatch:
+  schedule:
+    # Runs only on Sunday
+    - cron: "0 5 * * 0"
 
-schedule:
-  # Runs only on Sunday
-  - cron: "0 5 * * 0"
-  
 jobs:
   update:
     runs-on: ubuntu-latest
