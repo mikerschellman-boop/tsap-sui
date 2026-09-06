@@ -34,7 +34,7 @@ SFI_ARCHIVE_FILE = "sfi_archive.json"
 TEST_MODE = False
 TEST_SOURCE = "esoterica"
 
-DRY_RUN = True
+DRY_RUN = False
 
 
 def get_issue_date():
