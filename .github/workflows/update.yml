@@ -3,8 +3,9 @@ name: Update Tsap Sui
 on:
   workflow_dispatch:
   schedule:
-    # Runs only on Sunday
-    - cron: "0 5 * * 0"
+    # Runs early Sunday morning in Minneapolis
+    - cron: "17 0 * * 0"
+      timezone: "America/Chicago"
 
 jobs:
   update:
