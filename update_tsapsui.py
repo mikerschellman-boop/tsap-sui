@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 from datetime import date, timedelta
 from urllib.parse import urljoin
 import xml.etree.ElementTree as ET
+import os
 
 
 SFI_HOME = "https://www.santafe.edu/"
@@ -25,6 +26,9 @@ GOETEIA_BLOG = "https://goeteia.com/blog"
 HISTORY_FILE = "history.json"
 OUTPUT_FILE = "tsapsui.json"
 SFI_ARCHIVE_FILE = "sfi_archive.json"
+
+ISSUES_DIR = "issues"
+ISSUES_INDEX = os.path.join(ISSUES_DIR, "index.json")
 
 
 # ==========================================
