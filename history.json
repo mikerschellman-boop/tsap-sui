@@ -1,46 +1,49 @@
 {
   "sfi": {
     "published": [
-      "https://www.santafe.edu/news-center/news/random-walks-get-pushy"
+      "https://www.santafe.edu/news-center/news/random-walks-get-pushy",
+      "https://www.santafe.edu/news-center/news/a-review-of-the-traveler"
     ],
     "current_issue": {
-      "issue_date": "2026-09-06",
+      "issue_date": "2026-09-13",
       "article": {
         "source": "Santa Fe Institute",
-        "title": "Random walks get pushy",
-        "url": "https://www.santafe.edu/news-center/news/random-walks-get-pushy",
+        "title": "A review of \"The Traveler\"",
+        "url": "https://www.santafe.edu/news-center/news/a-review-of-the-traveler",
         "archive": false
       }
     }
   },
   "heylighen": {
     "published": [
-      "https://francisheylighen.substack.com/p/cooling-your-house-even-without-air"
+      "https://francisheylighen.substack.com/p/cooling-your-house-even-without-air",
+      "https://francisheylighen.substack.com/p/integrating-worldviews-a-tool-for"
     ],
     "current_issue": {
-      "issue_date": "2026-09-06",
+      "issue_date": "2026-09-13",
       "article": {
         "source": "The Self-Organizing Universe",
         "author": "Francis Heylighen",
-        "title": "Cooling your house even without air-conditioning",
-        "url": "https://francisheylighen.substack.com/p/cooling-your-house-even-without-air",
-        "published_date": "Wed, 02 Sep 2026 11:05:31 GMT",
-        "summary": "Thermodynamic reflections after a heat wave",
+        "title": "Integrating Worldviews: a Tool for Making Sense of Life",
+        "url": "https://francisheylighen.substack.com/p/integrating-worldviews-a-tool-for",
+        "published_date": "Tue, 08 Sep 2026 10:37:47 GMT",
+        "summary": "talk given at the centenary celebration of Leo Apostel (1925-1995)",
         "archive": false
       }
     }
   },
   "taijiquan_journal": {
     "published": [
-      "https://taijiquanjournal.blogspot.com/2026/08/tai-chi-proven-to-be-good-for-health.html"
+      "https://taijiquanjournal.blogspot.com/2026/08/tai-chi-proven-to-be-good-for-health.html",
+      "https://taijiquanjournal.blogspot.com/2026/05/sage-principles-by-cheng-man-ching.html"
     ],
     "current_issue": {
-      "issue_date": "2026-09-06",
+      "issue_date": "2026-09-13",
       "article": {
         "source": "Taijiquan Journal",
-        "title": "T'ai Chi Proven to Be Good for Health!",
-        "url": "https://taijiquanjournal.blogspot.com/2026/08/tai-chi-proven-to-be-good-for-health.html",
-        "published_date": "Tue, 25 Aug 2026 06:47:21 +0000",
+        "title": "Sage Principles by Cheng Man-ch'ing",
+        "url": "https://taijiquanjournal.blogspot.com/2026/05/sage-principles-by-cheng-man-ching.html",
+        "published_date": "Tue, 12 May 2026 03:14:00 +0000",
         "summary": null,
         "archive": false
       }
@@ -48,16 +51,17 @@
   },
   "slow_peace": {
     "published": [
-      "https://morganbuchanan.substack.com/p/cheng-man-chings-last-statement-on"
+      "https://morganbuchanan.substack.com/p/cheng-man-chings-last-statement-on",
+      "https://morganbuchanan.substack.com/p/ti-fang-lift-release-with-cheng-man"
     ],
     "current_issue": {
-      "issue_date": "2026-09-06",
+      "issue_date": "2026-09-13",
       "article": {
         "source": "Slow Peace",
         "author": "Morgan Buchanan",
-        "title": "Cheng Man Ching’s Last Statement On Tai Chi Chuan",
-        "url": "https://morganbuchanan.substack.com/p/cheng-man-chings-last-statement-on",
-        "published_date": "Wed, 02 Sep 2026 12:10:20 GMT",
+        "title": "Ti-Fang (Lift-Release) with Cheng Man Ching & Robert W. Smith",
+        "url": "https://morganbuchanan.substack.com/p/ti-fang-lift-release-with-cheng-man",
+        "published_date": "Wed, 09 Sep 2026 10:42:15 GMT",
         "summary": "MID-WEEK INSPIRATION FOR PAID SUBSCRIBERS",
         "access": "subscription",
         "support_url": "https://morganbuchanan.substack.com/",
@@ -68,16 +72,17 @@
   },
   "james_ka_smith": {
     "published": [
-      "https://jameskasmith.substack.com/p/ode-to-a-lost-notebook"
+      "https://jameskasmith.substack.com/p/ode-to-a-lost-notebook",
+      "https://jameskasmith.substack.com/p/on-the-fallacy-of-electability"
     ],
     "current_issue": {
-      "issue_date": "2026-09-06",
+      "issue_date": "2026-09-13",
       "article": {
         "source": "Quid Amo",
-        "title": "Ode to a Lost Notebook",
-        "url": "https://jameskasmith.substack.com/p/ode-to-a-lost-notebook",
-        "published_date": "Wed, 05 Aug 2026 17:03:42 GMT",
-        "summary": "Further lessons in letting go",
+        "title": "On the Fallacy of \"Electability\"",
+        "url": "https://jameskasmith.substack.com/p/on-the-fallacy-of-electability",
+        "published_date": "Tue, 28 Jul 2026 14:14:33 GMT",
+        "summary": "Thoughts before a Senate primary",
         "access": "open",
         "archive": false,
         "author": "James K.A. Smith",
@@ -88,16 +93,17 @@
   },
   "process_this": {
     "published": [
-      "https://processthis.substack.com/p/youre-probably-assyria-8a8"
+      "https://processthis.substack.com/p/youre-probably-assyria-8a8",
+      "https://processthis.substack.com/p/anselms-god-cant-just-forgive"
     ],
     "current_issue": {
-      "issue_date": "2026-09-06",
+      "issue_date": "2026-09-13",
       "article": {
         "source": "Process This",
-        "title": "You’re Probably Assyria",
-        "url": "https://processthis.substack.com/p/youre-probably-assyria-8a8",
-        "published_date": "Thu, 03 Sep 2026 18:09:32 GMT",
-        "summary": "Anna Sieges on the Book of the Twelve and the Empire You’re Actually In",
+        "title": "Anselm’s God Can’t Just Forgive",
+        "url": "https://processthis.substack.com/p/anselms-god-cant-just-forgive",
+        "published_date": "Sat, 12 Sep 2026 17:39:48 GMT",
+        "summary": "Joerg Rieger on Why That’s Good News, Not Cruelty",
         "access": "open",
         "archive": false,
         "author": "Tripp Fuller",
@@ -108,16 +114,17 @@
   },
   "intertextual_bible": {
     "published": [
-      "https://intertextualbible.substack.com/p/the-lords-prayer-is-a-jewish-prayer"
+      "https://intertextualbible.substack.com/p/the-lords-prayer-is-a-jewish-prayer",
+      "https://intertextualbible.substack.com/p/targum-traditions-in-the-gospels"
     ],
     "current_issue": {
-      "issue_date": "2026-09-06",
+      "issue_date": "2026-09-13",
       "article": {
         "source": "Intertextual Bible",
-        "title": "“The Lord’s Prayer” is a Jewish Prayer",
-        "url": "https://intertextualbible.substack.com/p/the-lords-prayer-is-a-jewish-prayer",
-        "published_date": "Sat, 29 Aug 2026 18:37:54 GMT",
-        "summary": "How Jesus’ definitive prayer reflects the character of the prayers of the synagogue",
+        "title": "Targum Traditions in the Gospels?",
+        "url": "https://intertextualbible.substack.com/p/targum-traditions-in-the-gospels",
+        "published_date": "Sat, 12 Sep 2026 22:52:58 GMT",
+        "summary": "Do the Gospels and Targum of Isaiah similarly interpret Isaiah?",
         "access": "open",
         "archive": false,
         "support_url": "https://intertextualbible.substack.com/",
@@ -127,16 +134,17 @@
   },
   "judith_weingarten": {
     "published": [
-      "http://judithweingarten.blogspot.com/2017/10/lady-sattjeni-v-of-elephantine-once-more.html"
+      "http://judithweingarten.blogspot.com/2017/10/lady-sattjeni-v-of-elephantine-once-more.html",
+      "http://judithweingarten.blogspot.com/2017/05/zenobia-visionary-queen-of-ancient.html"
     ],
     "current_issue": {
-      "issue_date": "2026-09-06",
+      "issue_date": "2026-09-13",
       "article": {
         "source": "Zenobia: Empress of the East",
         "author": "Judith Weingarten",
-        "title": "Lady Sattjeni V of Elephantine, Once More.",
-        "url": "http://judithweingarten.blogspot.com/2017/10/lady-sattjeni-v-of-elephantine-once-more.html",
-        "published_date": "2017-10-04T13:55:00.002+02:00",
+        "title": "Zenobia, Visionary Queen of Ancient Palmyra",
+        "url": "http://judithweingarten.blogspot.com/2017/05/zenobia-visionary-queen-of-ancient.html",
+        "published_date": "2017-05-03T21:12:00.001+02:00",
         "summary": null,
         "archive": true
       }
@@ -144,32 +152,34 @@
   },
   "cassie": {
     "published": [
-      "https://middleagedhistorian.substack.com/p/the-troubled-life-of-king-john-part2"
+      "https://middleagedhistorian.substack.com/p/the-troubled-life-of-king-john-part2",
+      "https://middleagedhistorian.substack.com/p/determining-the-true-and-rightful"
     ],
     "current_issue": {
-      "issue_date": "2026-09-06",
+      "issue_date": "2026-09-13",
       "article": {
         "source": "Seriously Medieval",
         "author": "Cassie Beyer",
-        "title": "The Troubled Life of King John, part 2",
-        "url": "https://middleagedhistorian.substack.com/p/the-troubled-life-of-king-john-part2",
-        "published_date": "Fri, 04 Sep 2026 14:28:11 GMT",
-        "summary": "Inheritance, murder and execution in the Middle Ages.",
+        "title": "Determining the True and Rightful King in the Middle Ages",
+        "url": "https://middleagedhistorian.substack.com/p/determining-the-true-and-rightful",
+        "published_date": "Thu, 27 Aug 2026 14:30:55 GMT",
+        "summary": "Medieval succession rules were more like suggestions",
         "archive": false
       }
     }
   },
   "rogue_classicism": {
     "published": [
-      "https://rogueclassicism.com/2026/09/04/rc-bulletin-september-4-2026/"
+      "https://rogueclassicism.com/2026/09/04/rc-bulletin-september-4-2026/",
+      "https://rogueclassicism.com/2026/09/11/rc-bulletin-september-11-2026/"
     ],
     "current_issue": {
-      "issue_date": "2026-09-06",
+      "issue_date": "2026-09-13",
       "article": {
         "source": "Rogue Classicism",
-        "title": "RC Bulletin ~ September 4, 2026",
-        "url": "https://rogueclassicism.com/2026/09/04/rc-bulletin-september-4-2026/",
-        "published_date": "Fri, 04 Sep 2026 15:26:16 +0000",
+        "title": "RC Bulletin ~ September 11, 2026",
+        "url": "https://rogueclassicism.com/2026/09/11/rc-bulletin-september-11-2026/",
+        "published_date": "Fri, 11 Sep 2026 15:29:10 +0000",
         "summary": null,
         "archive": false
       }
@@ -177,16 +187,17 @@
   },
   "benebell_wen": {
     "published": [
-      "https://benebellwen.com/2026/07/24/does-it-even-make-sense-to-publish-a-fourth-book/"
+      "https://benebellwen.com/2026/07/24/does-it-even-make-sense-to-publish-a-fourth-book/",
+      "https://benebellwen.com/2026/07/07/holistic-tarot-audiobook-rewrite/"
     ],
     "current_issue": {
-      "issue_date": "2026-09-06",
+      "issue_date": "2026-09-13",
       "article": {
         "source": "Benebell Wen",
         "author": "Benebell Wen",
-        "title": "Does It Even Make Sense to Publish a Fourth Book?",
-        "url": "https://benebellwen.com/2026/07/24/does-it-even-make-sense-to-publish-a-fourth-book/",
-        "published_date": "Fri, 24 Jul 2026 21:20:33 +0000",
+        "title": "The Holistic Tarot Rewrite for Audiobook Format",
+        "url": "https://benebellwen.com/2026/07/07/holistic-tarot-audiobook-rewrite/",
+        "published_date": "Tue, 07 Jul 2026 14:07:32 +0000",
         "summary": null,
         "archive": false
       }
@@ -194,16 +205,17 @@
   },
   "digital_ambler": {
     "published": [
-      "https://digitalambler.com/2026/07/19/thoughts-and-cautions-about-litwas-hermetica-i/"
+      "https://digitalambler.com/2026/07/19/thoughts-and-cautions-about-litwas-hermetica-i/",
+      "https://digitalambler.com/2026/06/29/check-out-the-lecture-i-gave-on-the-origins-and-history-of-hermeticism/"
     ],
     "current_issue": {
-      "issue_date": "2026-09-06",
+      "issue_date": "2026-09-13",
       "article": {
         "source": "The Digital Ambler",
         "author": "Sam Block",
-        "title": "Thoughts and Cautions about Litwa’s “Hermetica I”",
-        "url": "https://digitalambler.com/2026/07/19/thoughts-and-cautions-about-litwas-hermetica-i/",
-        "published_date": "Sun, 19 Jul 2026 19:37:08 +0000",
+        "title": "Check out the lecture I gave on the Origins and History of Hermeticism!",
+        "url": "https://digitalambler.com/2026/06/29/check-out-the-lecture-i-gave-on-the-origins-and-history-of-hermeticism/",
+        "published_date": "Mon, 29 Jun 2026 22:30:02 +0000",
         "summary": null,
         "archive": false
       }
@@ -211,15 +223,16 @@
   },
   "goeteia": {
     "published": [
-      "https://goeteia.com/lore/epicurean-eidola-the-spores-of-self"
+      "https://goeteia.com/lore/epicurean-eidola-the-spores-of-self",
+      "https://goeteia.com/lore/becoming-angelic-a-reappraisal"
     ],
     "current_issue": {
-      "issue_date": "2026-09-06",
+      "issue_date": "2026-09-13",
       "article": {
         "source": "Goêteia",
         "author": "Frater Acher",
-        "title": "Epicurean Eidōla: The Spores of Self",
-        "url": "https://goeteia.com/lore/epicurean-eidola-the-spores-of-self",
+        "title": "Becoming Angelic - A Reappraisal",
+        "url": "https://goeteia.com/lore/becoming-angelic-a-reappraisal",
         "published_date": null,
         "summary": null,
         "archive": false
