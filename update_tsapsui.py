@@ -118,6 +118,73 @@ def save_history(history):
     with open(HISTORY_FILE, "w", encoding="utf-8") as f:
         json.dump(history, f, indent=2, ensure_ascii=False)
 
+def archive_current_issue():
+    """
+    Preserve the existing tsapsui.json as a dated issue
+    before a new issue replaces it.
+    """
+
+    if not os.path.exists(OUTPUT_FILE):
+        return
+
+    with open(OUTPUT_FILE, "r", encoding="utf-8") as f:
+        current_issue = json.load(f)
+
+    issue_date = current_issue.get("issue_date")
+
+    if not issue_date:
+        print("Current issue has no issue_date; skipping archive.")
+        return
+
+    os.makedirs(ISSUES_DIR, exist_ok=True)
+
+    archive_file = os.path.join(
+        ISSUES_DIR,
+        f"{issue_date}.json"
+    )
+
+    # Never overwrite an issue that has already been archived.
+    if not os.path.exists(archive_file):
+        with open(archive_file, "w", encoding="utf-8") as f:
+            json.dump(
+                current_issue,
+                f,
+                indent=2,
+                ensure_ascii=False
+            )
+
+        print(f"Archived issue: {issue_date}")
+    else:
+        print(f"Issue already archived: {issue_date}")
+
+    # Load or create the issue index.
+    if os.path.exists(ISSUES_INDEX):
+        with open(ISSUES_INDEX, "r", encoding="utf-8") as f:
+            index = json.load(f)
+    else:
+        index = []
+
+    if not any(
+        entry.get("issue_date") == issue_date
+        for entry in index
+    ):
+        index.append({
+            "issue_date": issue_date,
+            "file": f"issues/{issue_date}.json"
+        })
+
+        index.sort(
+            key=lambda x: x["issue_date"],
+            reverse=True
+        )
+
+        with open(ISSUES_INDEX, "w", encoding="utf-8") as f:
+            json.dump(
+                index,
+                f,
+                indent=2,
+                ensure_ascii=False
+            )
 
 # ==========================================
 # SANTA FE INSTITUTE COLLECTOR
